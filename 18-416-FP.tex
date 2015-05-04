@@ -1,6 +1,6 @@
 %Jennifer Pan, August 2011
 
-\documentclass[10pt,letter]{article}
+\documentclass[11pt,letter]{article}
 	% basic article document class
 	% use percent signs to make comments to yourself -- they will not show up.
 \usepackage{hyperref}
@@ -34,12 +34,24 @@
 \maketitle 
 	% tells latex to follow your header (e.g., title, author) commands.
 
-\section{Introduction} 
-\section{Notation}
-\section{PS Paper}
-\section{VZ Paper}
-\section{Limits of Randomness}
-\section{Open?}
+\section{Introduction.} 
+
+In the Maximum Satisfiability Problem (MAX-SAT) we are given a set of boolean variables $x_1, ..., x_n$ and clauses $C_1,...,C_m$ involving them and want an assignment of the variables that satisfies the most clauses. In class we analyzed the unweighted case, but here we consider non-negative weights $w_i$ for the clauses and ask for the weight of the satisfied clauses to be maximized. This problem, which is a generalization of the Boolean Satisfiability Problem (SAT), is also $\NP$-complete.  
+
+This problem has been studied extensively. Let $W = \sum w_i$ be the sum of the clause weights. A simple randomized algorithm sets each variable to true with probability $1/2$ and hence, by linearity of expectation, satisfies $(1/2)W$ of the clauses. Johnson \cite{Johnson1974256} gave the first deterministic algorithm to match this ratio. Consider rescaling the weight of a clause $C_j$ by its length in the following way: $f(C_j) = w_j 2^{-|C_j|}$. This weight function favors small clauses since they are easier to falsify. Johnson's algorithm sets the $i$-th variable to be true if the modified weight of the clauses containing $x_i$ is greater than that of the clauses containing its negation. It was later shown that Johnson's algorithm was in fact the derandomization of the first algorithm and that the approximation ratio of the derandomized algorithm could be improved to $2/3$ \cite{Chen1999622}.
+
+Later, Yanakakis \cite{Yannakakis1994475} and separately Goemans and Williamson \cite{Goemans94new3/4-approximation} gave algorithms which achieved $3/4$-approximation ratios. In fact, we studied one of these in class. These algorithms relied heavily on linear programming relaxations. In 1999, Williamson posed the question of whether or not the same approximation ratio could be achieved without using Linear Programming. In 2011, Poloczek and Schnitger \cite{Poloczek:2011:RVJ:2133036.2133087} answered this question in the affirmative by exhibiting the first purely combinatorial algorithm for MAX-SAT. Their approach is similar to that of Johnson but they introduce slight weight modifications that guarantee that at least $3/4$ of the weighted clauses will be satisfied. While this result was exciting, the probability modifications are complicated and depend on the previous decisions of the algorithm. Shortly after, van Zuylen \cite{vanZuylen:2011:SAM:2238496.2238512} gave a simpler analysis of the algorithm. 
+
+This paper is organized as follows. In section 2, we highlight the common techniques of both papers and show how they could provide a $3/4$-approximation. In section 3, we present the main ideas of Poloczek and Schtinger's paper. In section 3, we present van Zuylen's simplified approach. In section 4, we present results on the limits of randomization. In section 5, we mention some open problems that have been posed recently.
+
+\section{The General idea.} 
+
+\section{Poloczek and Schtinger's approach.}
+\section{van Zuyeln's simplified algorithm.}
+\section{Limits of Randomness.}
+\section{Open questions.}
  
+\bibliography{18-416-FP.bib} 
+\bibliographystyle{plain}
 \end{document}
 	% line of code telling latex that your document is ending. If you leave this out, you'll get an error
