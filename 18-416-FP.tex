@@ -133,6 +133,110 @@ at time $i$ if it contains some literal $x_j$ with $j > i$ and it is not yet sat
 We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1^a,...,x_i^a,x_{i+1}^*,...,x_n^*$. 
 
 \section{Poloczek and Schtinger's approach.}
+
+Here we present Poloczek and Shcnitger's 2011 Algorithm. Their approach is based on randomizing Johnson's Algorithm.
+
+\subsection{Johnson's Deterministic Algorithm}
+
+Consider, as mentioned above, the scaled clause weight. For a clause $C_j$, with weight $w_j$, we have the modified weight:  $f(C_j) = w_j 2^{-|C_j|}$. 
+
+Johnson's Algorithm processes the variables in an arbitrary (random?) order, and assigns them a value of 0 or 1 as follows. Let $x$ be the variable being assigned a value. We define the \textbf{support} of $x$, $\mu_x$ to be the sum of the scaled weights of clauses containing $x$. Similarly, $\mu_{\bar{x}}$ is the sum of scaled weights of clauses containing $\bar{x}$:
+
+\begin{align*}
+\mu_x = \sum_{C,x\in C}f(C), \,\,\,\, \mu_{\bar{x}} =\sum_{C,\bar{x}\in C}f(C)
+\end{align*}
+Johnson's Algorithm greedily assigns $x=1$ if and only if $\mu_x \ge \mu_{\bar{x}}$.
+
+\subsection{The Canonical Randomization}
+Poloczek and Schnitger consider the \textit{Canonical Randomization} (CR) of Johnson's Algorithm. Instead of deterministically assigning a value to the variable $x$, we assign it a value of 1 with probability proportional to the support of $x$ relative to that of $\bar{x}$. So
+$$ \Pr[\text{assign } x=1] = \frac{\mu_x}{\mu_x + \mu_{\bar{x}}}$$, and $x$ equals zero with the remaining probability.
+
+\begin{lemma}
+\label{L:1}
+The approximation ratio of CR algorithm is upper-bounded by:
+$$\frac{17}{23} < \frac{3}{4}$$
+
+\end{lemma} 
+
+\subsection{Alternative Probabilities}
+Due to Lemma \ref{L:1}, Poloczek and Schnitger decide to use an alternative weighting scheme. In this alternative, every clause with a single variable gets its weight doubled, while the remaining weights are unchanged. Therefore, the new support for $x$ which we can label $\lambda_x$ is:
+$$[\text{sum of weights of clauses with $x$ with $\ge 2$ variables}] + 2[\text{sum of weights of clause containing just x}].$$
+
+If we call the first sum $fanin$, and label the second sum $w_x$, then:
+\begin{eqnarray*}
+\lambda_x \equiv \text{Support for } x = fanin + 2w_x\\
+\lambda_{\bar{x}} \equiv \text{Support for } \bar{x} = fanout + 2w_{\bar{x}}
+\end{eqnarray*}
+Finally, we define $\Delta$ to be the sum of the supports, so $\Delta = \lambda_{x} + \lambda_{\bar{x}} = fanin + 2w_x + fanout + 2w_{\bar{x}}$. If we do a canonical randomization  using the new weight functions, we see that
+\begin{eqnarray*}
+q_0 &:=& \Pr[x=0] = \frac{fanout + 2w_{\bar{x}}}{\Delta}\\
+q_1 &:=& \Pr[x=1] = \frac{fanin + 2w_x}{\Delta}
+\end{eqnarray*}
+Note that for a $2-CNF$ formula, these alternative weights are exactly equivalent to the weights used in Johnson's Algorithm. Thus, these modified weights still don't guarantee a $\frac{3}{4}$ approximation ratio.
+
+\subsection{Slack Algorithm}
+The general approach of this algorithm is to change the probabilities, $q_0, q_1$ with which we assign values to $x$. In a sense, we're making the algorithm "less random" by increasing the higher of the two probabilities, bringing it closer to 1, and decreasing the lower of the two probabilities.
+
+Assume w.l.o.g that $q_0 \le q_1$, so $x$ is at least as likely to assigned a value of 1. We now define the modified probabilities: $p_1 = q_1 + \varepsilon$, $p_0 = q_0 - \varepsilon$. We will show that for a good choice of $\varepsilon$, these probabilities yield a $\frac{3}{4}$ approximation. Doing this requires proving a few lemmas which Poloczek and Schnitger do in their paper. In order to better show the logical progression, we will defer some of the proofs to the end.
+
+For any variable $x$, we define the random variable ``slack'' to be the magnitude of the difference between the support of $x$ and that of $\bar{x}$:
+\begin{equation}
+\text{slack} = |(fanout + 2w_{\bar{x}}) -(fanin + 2w_x)|
+\end{equation}
+Let $x$ be the $i^{th}$ variable fixed. Following our notation in the introduction, let SAT($i$), UNSAT($i$) be random variables that denote the weight of all clauses that are satisfied, and unsatisfiable once we fix $x$, respectively. We define sat($i$) = SAT($i$) - SAT($i-1$), sat($i$) = UNSAT($i$) - UNSAT($i-1$). It follows that
+\begin{eqnarray}
+E[\text{sat}(i)] &=& p_0(fanout + 2w_{\bar{x}}) + p_1(fanin + 2w_{x})\\
+E[\text{unsat}(i)] &=& p_0w_x + p_1w_{\bar{x}}
+\end{eqnarray}
+Now, we call a clause, $C$ containing $x$ or its negation \textit{alive} iff after assigning a value to $x$, $C$ still has not been satisfied or falsified. Further, we define the random variable ``wounded" to be the sum of the weights of all alive clauses. Therefore
+\begin{equation}
+E[\text{wounded}] = p_0 \cdot fanin + p_1 \cdot fanout
+\end{equation}
+Now Poloczek and Schnitger prove the following Lemma:
+\begin{lemma} \label{L:2}
+$E[\text{sat}(i) - 3\cdot\text{unsat}(i)] = E[\text{wounded} + \text{slack}] - (w_x + w_{\bar{x}})$
+\end{lemma}
+Now consider some optimal assignment, $\pi$. Let us define $c(x)$ to be the weight of alive clauses that are not satisfied by $\pi$ before assigning a value to $x$, and $c'(x)$ be that same quantity after we assign a value to $x$. By linearity of expectations, we can add the quantity $2(c-c')$ to both sides of the equation of lemma \ref{L:2}, yielding:
+\begin{equation}
+E[\text{sat}(i) - 3\cdot\text{unsat}(i)+ 2(c-c')] = E[\text{wounded} + \text{slack} + 2(c-c')] - (w_x + w_{\bar{x}})
+\end{equation}
+If we can manage to find $p_0,p_1$ so that the right side of the equation is always positive, then we have 
+\begin{equation}
+E[\text{sat}(i) - 3\cdot\text{unsat}(i)+ 2(c-c')] \ge 0 \label{C:1}
+\end{equation}
+This condition can be rewritten as:
+\begin{equation}
+E[(\text{SAT}(i) - \text{SAT}(i-1)) - 3\cdot(\text{UNSAT}(i) - \text{UNSAT}(i-1))] \ge  2(c'-c) \ge 0
+\end{equation}
+Which is exactly the condition we stated both algorithms satisfy. Adding this up over all variables yields a telescoping sum, which cancels to
+\begin{eqnarray}
+E[\text{SAT}(n)] - 3E[\text{UNSAT}(n)] - 2(W-\text{OPT}) \ge 0
+\\4E[SAT] \ge W + 2\text{OPT} \ge 3\text{OPT}
+\end{eqnarray}
+So the algorithm will have a $\frac{3}{4}$ approximation ratio if \ref{C:1} is satisfied. To achieve this, the next lemma is useful:
+\begin{lemma} \label{L:3}
+Assume our assignment probabilities for $x$ are $\Pr[x = 1] = p_1, \Pr[x=0] = p_0$. If the optimal assignment is $x=1$, then:
+$$E[\text{wounded} - 2(c'-c)] - (w_x - w_{\bar{x}}) \ge \frac{\text{slack}}{\Delta}(w_x - w_{\bar{x}}) + \varepsilon(fanin + fanout)$$
+If the optimal assignment is  $x=0$, then:
+$$E[\text{wounded} - 2(c'-c)] - (w_x - w_{\bar{x}}) \ge \frac{\text{slack}}{\Delta}(w_x - w_{\bar{x}}) - \varepsilon(fanin + fanout)$$
+\end{lemma}
+The proof of this lemma involves quite a bit of algebra and is therefore omitted here. The consequence of this lemma, though, is that we can use it to find a value for $\varepsilon$ so that  \ref{C:1} is always satisfied.
+
+We want to express this constraint in terms of slack. So we note that from our definition of slack:
+\begin{eqnarray}
+E[\text{slack}] &=& (p_1-p_0)\cdot ((fanout + 2w_{\bar{x}}) -(fanin + 2w_x))
+\\&=& (q_1-q_0+2\epsilon)(q_1-q_0)\cdot\Delta
+\\&=& \Delta[(q_1-q_0)^2 + 2\varepsilon(q_1-q_0)]
+\\&=& \frac{\text{slack}^2}{\Delta} +2\varepsilon\cdot\text{slack}
+\end{eqnarray}
+Plugging this into \ref{C:1}, and applying \ref{L:3}, we get that if $x=1$ is the optimal assignment,
+$$E[\text{sat}(i) - 3\cdot\text{unsat}(i)+ 2(c-c')] \ge \frac{\text{slack}^2}{\Delta} +2\varepsilon\cdot\text{slack} - \frac{\text{slack}}{\Delta}(w_x + w_{\bar{x}}) + \varepsilon(fanin + fanout)$$.
+Setting the this expression equal to zero and solving for $\varepsilon$ yields
+\begin{equation}
+\varepsilon = \varepsilon_1 \equiv \frac{-\frac{\text{slack}^2}{\Delta} + \frac{\text{slack}}{\Delta}(w_x + w_{\bar{x}})}{2\text{slack}+ fanout + fanin}
+\end{equation}
+Thus this value of $\varepsilon$ yields exactly zero for the expression we want to be nonnegative. It's easy to check this also works for the case when $x=0$ is an optimal assignment. So, for every variable, we calculate $q_1, q_0$, calculate $\varepsilon_1$, and use it to get $P_1, p_0$. Then we assign $x=1$ with probability $p_1$. As we've just shown, this yields $E[SAT] \ge \frac{3}{4}\text{OPT}$.
+
 \section{van Zuyeln's simplified algorithm.}
 
 In this section we present van Zuylen's combinatorial algorithm. 
