@@ -39,7 +39,7 @@
 \maketitle
 	% tells latex to follow your header (e.g., title, author) commands.
 
-\section{Introduction.}
+\section{Introduction}
 
 In the Maximum Satisfiability Problem (MAX-SAT) we are given a set of boolean variables $x_1, ..., x_n$
 and clauses $C_1,...,C_m$ involving them and want an assignment of the variables that satisfies the most clauses.
@@ -49,13 +49,13 @@ Boolean Satisfiability Problem (SAT), is also $\NP$-complete.
 
 This problem has been studied extensively. Let $W = \sum w_i$ be the sum of the clause weights.
 A simple randomized algorithm sets each variable to true with probability $1/2$ and hence,
- by linearity of expectation, satisfies $(1/2)W$ of the clauses. Johnson \cite{Johnson1974256}
- gave the first deterministic algorithm to match this ratio. Consider rescaling the weight of a clause $C_j$
- by its length in the following way: $f(C_j) = w_j 2^{-|C_j|}$. This weight function favors small clauses
- since they are easier to falsify. Johnson's algorithm sets the $i$-th variable to be true
- if the modified weight of the clauses containing $x_i$ is greater than that of the clauses containing its negation.
- It was later shown that Johnson's algorithm was in fact the derandomization of the first algorithm and that the
-  approximation ratio of the derandomized algorithm could be improved to $2/3$ \cite{Chen1999622}.
+by linearity of expectation, satisfies $(1/2)W$ of the clauses. Johnson \cite{Johnson1974256}
+gave the first deterministic algorithm to match this ratio. Consider rescaling the weight of a clause $C_j$
+by its length in the following way: $f(C_j) = w_j 2^{-|C_j|}$. This weight function favors small clauses
+since they are easier to falsify. Johnson's algorithm sets the $i$-th variable to be true
+if the modified weight of the clauses containing $x_i$ is greater than that of the clauses containing its negation.
+It was later shown that Johnson's algorithm was in fact the derandomization of the first algorithm and that the
+approximation ratio of the derandomized algorithm could be improved to $2/3$ \cite{Chen1999622}.
 
 Later, Yanakakis \cite{Yannakakis1994475} and separately Goemans and Williamson \cite{Goemans94new3/4-approximation}
 gave algorithms which achieved $3/4$-approximation ratios. In fact, we studied one of these in class.
@@ -64,16 +64,25 @@ of whether or not the same approximation ratio could be achieved without using L
 Poloczek and Schnitger \cite{Poloczek:2011:RVJ:2133036.2133087} answered this question in the affirmative
 by exhibiting the first purely combinatorial algorithm for MAX-SAT. Their approach is similar to that of Johnson
 but they introduce slight weight modifications that guarantee that at least $3/4$ of the weighted clauses will be satisfied.
- While this result was exciting, the probability modifications are complicated and depend on the previous decisions
-  of the algorithm. Shortly after, van Zuylen \cite{vanZuylen:2011:SAM:2238496.2238512} gave a simpler analysis of the algorithm.
+While this result was exciting, the probability modifications are complicated and depend on the previous decisions
+of the algorithm. Shortly after, van Zuylen \cite{vanZuylen:2011:SAM:2238496.2238512} gave a simpler analysis of the algorithm.
+Both algorithms use randomness but are greedy in some sense,
+setting a variable true or false with probability based on
+how many clauses would be satisfied either way.
 
-This paper is organized as follows. In section 2, we present some notation and highlight the common techniques of both papers
-and show how they could provide a $3/4$-approximation. In section 3, we present the main ideas
-of Poloczek and Schtinger's paper. In section 3, we present van Zuylen's simplified approach.
-In section 4, we present results on the limits of randomization.
-In section 5, we mention some open problems that have been posed recently.
+This paper is organized as follows.
+In Section \ref{S:idea}, we present some notation and highlight the common techniques of both papers
+and show how they could provide a $3/4$-approximation.
+In Section \ref{S:PS}, we present the main ideas of Poloczek and Schtinger's paper.
+In Section \ref{S:vZ}, we present van Zuylen's simplified approach.
+In Section \ref{S:limits}, we present results on the limits of
+the greedy approach the two algorithms share,
+showing that a $3/4$-approximation is the best it can do with randomness
+and, more strikingly,
+that it can do no better than a $0.729$-approxmation without randomness.
+In Section \ref{S:open}, we mention some open problems that have been posed recently.
 
-\section{The General idea.}
+\section{The General Idea}\label{S:idea}
 
 Let the input variables be $x_1,...,x_n$ and the input clauses be $C_1,...,C_m$
 each with associated non-negative weights $w_1,...,w_m$. Let $\sum_{i=1}^{m} w_i = W$.
@@ -132,7 +141,7 @@ Let $x_i^*$ be the optimal assignment of $x_i$ and $x_i^{a}$ be the algorithm's 
 at time $i$ if it contains some literal $x_j$ with $j > i$ and it is not yet satisfied by $x_1^a,...,x_i^a$.
 We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1^a,...,x_i^a,x_{i+1}^*,...,x_n^*$.
 
-\section{Poloczek and Schtinger's approach.}
+\section{Poloczek and Schtinger's approach}\label{S:PS}
 
 Here we present Poloczek and Shcnitger's 2011 Algorithm. Their approach is based on randomizing Johnson's Algorithm.
 
@@ -237,7 +246,7 @@ Setting the this expression equal to zero and solving for $\varepsilon$ yields
 \end{equation}
 Thus this value of $\varepsilon$ yields exactly zero for the expression we want to be nonnegative. It's easy to check this also works for the case when $x=0$ is an optimal assignment. So, for every variable, we calculate $q_1, q_0$, calculate $\varepsilon_1$, and use it to get $P_1, p_0$. Then we assign $x=1$ with probability $p_1$. As we've just shown, this yields $E[SAT] \ge \frac{3}{4}\text{OPT}$.
 
-\section{van Zuyeln's simplified algorithm.}
+\section{van Zuyeln's Simplified Algorithm}\label{S:vZ}
 
 In this section we present van Zuylen's combinatorial algorithm.
 
@@ -299,7 +308,7 @@ Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then (\r
 \overline{F_i} < 0$, a contradiction.
 
 Consider now the case where $\alpha = 1$, i.e. $W_i + F_i -\overline{W_i} \geq \overline{F_i} + F_i$ or $W_i - \overline{F_i} \geq \overline{W_i}$.
-We can notice that (\ref{eq:3}) $= 2(-W_i + \overline{F_i}) \leq -2\overline{W_i}$. On the other hand, the right hand side of  $(\ref{eq:4)}$
+We can notice that (\ref{eq:3}) $= 2(-W_i + \overline{F_i}) \leq -2\overline{W_i}$. On the other hand, the right hand side of  (\ref{eq:4})
 is at least $W_i + F_i + 2\overline{W_i} -3\overline{W_i} = W_i + F_i - \overline{W_i}$ which is at least $0$ since otherwise we would get
 that $F_i + \overline{F_i} < 0$, a contradiction.
 
@@ -308,8 +317,8 @@ for the reader to save space and prevent further cluttering.
 
 \end{proof}
 
-\section{Limits of Randomness.}
-\section{Open questions.}
+\section{Limits of the Greedy Approach}\label{S:limits}
+\section{Open Questions}\label{S:open}
 
 \bibliography{18-416-FP.bib}
 \bibliographystyle{plain}
