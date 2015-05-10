@@ -25,7 +25,7 @@
 
 \usepackage{fullpage}
 	% package that specifies normal margins
-	
+
 
 \begin{document}
 	% line of code telling latex that your document is beginning
@@ -33,80 +33,80 @@
 
 \title{18.416 Final Project}
 
-\author{Jonathan Elzur, Ariel Schvartzman, Ziv Scully \\ $\{$jelzur, arielsc, ziv$\}$@mit.edu} 
+\author{Jonathan Elzur, Ariel Schvartzman, Ziv Scully \\ $\{$jelzur, arielsc, ziv$\}$@mit.edu}
 % Note: when you omit this command, the current dateis automatically included
- 
-\maketitle 
+
+\maketitle
 	% tells latex to follow your header (e.g., title, author) commands.
 
-\section{Introduction.} 
+\section{Introduction.}
 
-In the Maximum Satisfiability Problem (MAX-SAT) we are given a set of boolean variables $x_1, ..., x_n$ 
-and clauses $C_1,...,C_m$ involving them and want an assignment of the variables that satisfies the most clauses. 
-In class we analyzed the unweighted case, but here we consider non-negative weights $w_i$ for the clauses 
-and ask for the weight of the satisfied clauses to be maximized. This problem, which is a generalization of the 
-Boolean Satisfiability Problem (SAT), is also $\NP$-complete.  
+In the Maximum Satisfiability Problem (MAX-SAT) we are given a set of boolean variables $x_1, ..., x_n$
+and clauses $C_1,...,C_m$ involving them and want an assignment of the variables that satisfies the most clauses.
+In class we analyzed the unweighted case, but here we consider non-negative weights $w_i$ for the clauses
+and ask for the weight of the satisfied clauses to be maximized. This problem, which is a generalization of the
+Boolean Satisfiability Problem (SAT), is also $\NP$-complete.
 
-This problem has been studied extensively. Let $W = \sum w_i$ be the sum of the clause weights. 
+This problem has been studied extensively. Let $W = \sum w_i$ be the sum of the clause weights.
 A simple randomized algorithm sets each variable to true with probability $1/2$ and hence,
- by linearity of expectation, satisfies $(1/2)W$ of the clauses. Johnson \cite{Johnson1974256} 
- gave the first deterministic algorithm to match this ratio. Consider rescaling the weight of a clause $C_j$ 
- by its length in the following way: $f(C_j) = w_j 2^{-|C_j|}$. This weight function favors small clauses 
- since they are easier to falsify. Johnson's algorithm sets the $i$-th variable to be true 
- if the modified weight of the clauses containing $x_i$ is greater than that of the clauses containing its negation. 
+ by linearity of expectation, satisfies $(1/2)W$ of the clauses. Johnson \cite{Johnson1974256}
+ gave the first deterministic algorithm to match this ratio. Consider rescaling the weight of a clause $C_j$
+ by its length in the following way: $f(C_j) = w_j 2^{-|C_j|}$. This weight function favors small clauses
+ since they are easier to falsify. Johnson's algorithm sets the $i$-th variable to be true
+ if the modified weight of the clauses containing $x_i$ is greater than that of the clauses containing its negation.
  It was later shown that Johnson's algorithm was in fact the derandomization of the first algorithm and that the
   approximation ratio of the derandomized algorithm could be improved to $2/3$ \cite{Chen1999622}.
 
-Later, Yanakakis \cite{Yannakakis1994475} and separately Goemans and Williamson \cite{Goemans94new3/4-approximation} 
-gave algorithms which achieved $3/4$-approximation ratios. In fact, we studied one of these in class. 
-These algorithms relied heavily on linear programming relaxations. In 1999, Williamson posed the question 
-of whether or not the same approximation ratio could be achieved without using Linear Programming. In 2011, 
-Poloczek and Schnitger \cite{Poloczek:2011:RVJ:2133036.2133087} answered this question in the affirmative 
-by exhibiting the first purely combinatorial algorithm for MAX-SAT. Their approach is similar to that of Johnson 
+Later, Yanakakis \cite{Yannakakis1994475} and separately Goemans and Williamson \cite{Goemans94new3/4-approximation}
+gave algorithms which achieved $3/4$-approximation ratios. In fact, we studied one of these in class.
+These algorithms relied heavily on linear programming relaxations. In 1999, Williamson posed the question
+of whether or not the same approximation ratio could be achieved without using Linear Programming. In 2011,
+Poloczek and Schnitger \cite{Poloczek:2011:RVJ:2133036.2133087} answered this question in the affirmative
+by exhibiting the first purely combinatorial algorithm for MAX-SAT. Their approach is similar to that of Johnson
 but they introduce slight weight modifications that guarantee that at least $3/4$ of the weighted clauses will be satisfied.
  While this result was exciting, the probability modifications are complicated and depend on the previous decisions
-  of the algorithm. Shortly after, van Zuylen \cite{vanZuylen:2011:SAM:2238496.2238512} gave a simpler analysis of the algorithm. 
+  of the algorithm. Shortly after, van Zuylen \cite{vanZuylen:2011:SAM:2238496.2238512} gave a simpler analysis of the algorithm.
 
-This paper is organized as follows. In section 2, we present some notation and highlight the common techniques of both papers 
-and show how they could provide a $3/4$-approximation. In section 3, we present the main ideas 
-of Poloczek and Schtinger's paper. In section 3, we present van Zuylen's simplified approach. 
-In section 4, we present results on the limits of randomization. 
+This paper is organized as follows. In section 2, we present some notation and highlight the common techniques of both papers
+and show how they could provide a $3/4$-approximation. In section 3, we present the main ideas
+of Poloczek and Schtinger's paper. In section 3, we present van Zuylen's simplified approach.
+In section 4, we present results on the limits of randomization.
 In section 5, we mention some open problems that have been posed recently.
 
-\section{The General idea.} 
+\section{The General idea.}
 
-Let the input variables be $x_1,...,x_n$ and the input clauses be $C_1,...,C_m$ 
-each with associated non-negative weights $w_1,...,w_m$. Let $\sum_{i=1}^{m} w_i = W$. 
-We are interested in finding an assignment of the variables $x_i$ such that the clauses satisfied have weight at least $\frac{3}{4}W$. 
+Let the input variables be $x_1,...,x_n$ and the input clauses be $C_1,...,C_m$
+each with associated non-negative weights $w_1,...,w_m$. Let $\sum_{i=1}^{m} w_i = W$.
+We are interested in finding an assignment of the variables $x_i$ such that the clauses satisfied have weight at least $\frac{3}{4}W$.
 
 Our algorithm will be sequentially deciding what value to assign to each variable. Let $\text{SAT}(i)$ be the total weight of the clauses
 satisfied by our partial assignment $x_1, ..., x_i$ and let $\text{UNSAT}(i)$ be the total weight of the clauses that are falsified (i.e. unsatisfiable).
-Suppose we have set variables $x_1,...,x_{i-1}$ and are considering a value for variable $x_i$. Then $\text{SAT}(i)-\text{SAT}(i-1)$ is the weight 
+Suppose we have set variables $x_1,...,x_{i-1}$ and are considering a value for variable $x_i$. Then $\text{SAT}(i)-\text{SAT}(i-1)$ is the weight
 of the clauses that become satisfied by assigning $x_i$ and similarly $\text{UNSAT}(i) - \text{UNSAT}(i-1)$ is the weight of the clauses that become
-unsatisfiable by assigning $x_i$. 
-Notice that $\text{SAT}(n)$ is the total weight of the clauses satisfied by our algorithm and $\text{UNSAT}(n) = W - \text{SAT}(n)$ is the weight of clauses 
-unsatisfied by the algorithm. Both algorithms we study rely on the following fact to be true to meet their guarantees: 
+unsatisfiable by assigning $x_i$.
+Notice that $\text{SAT}(n)$ is the total weight of the clauses satisfied by our algorithm and $\text{UNSAT}(n) = W - \text{SAT}(n)$ is the weight of clauses
+unsatisfied by the algorithm. Both algorithms we study rely on the following fact to be true to meet their guarantees:
 
 \begin{equation}
 \label{eq:1}
 \text{SAT}(i)-\text{SAT}(i-1) - 3\left(\text{UNSAT}(i) - \text{UNSAT}(i-1)\right) \geq 0 \forall i
 \end{equation}
 
-Adding these inequalities over all $i$ we get that 
+Adding these inequalities over all $i$ we get that
 
 \begin{equation*}
 \begin{aligned}
 \sum_{i = 1}^{m} \text{SAT}(i)-\text{SAT}(i-1) - 3\left(\text{UNSAT}(i) - \text{UNSAT}(i-1)\right)  & = \text{SAT}(n) - 3\text{UNSAT}(n) \\
 & = 4\text{SAT}(n) - 3W \\
-& \geq 0 
+& \geq 0
 \end{aligned}
 \end{equation*}
 
-From this we get that our algorithms approximation ratio, $\text{SAT}(n)$, is at least $\frac{3}{4}$ of the maximum possible weight $W$. 
+From this we get that our algorithms approximation ratio, $\text{SAT}(n)$, is at least $\frac{3}{4}$ of the maximum possible weight $W$.
 
-There might not always exist an assignment for $i$ such that the equation (cite) above holds. However, we only need it to hold on aggregate. 
-This is why the notion of a potential function $\phi$ is introduced. Throughout the algorithm, we will use the potential function to help us pay 
-for future mistakes where the inequality above might not hold. 
+There might not always exist an assignment for $i$ such that the equation (cite) above holds. However, we only need it to hold on aggregate.
+This is why the notion of a potential function $\phi$ is introduced. Throughout the algorithm, we will use the potential function to help us pay
+for future mistakes where the inequality above might not hold.
 
 Van Zuylen explains the desired behavior of this potential function in terms of other parameters of the problem. If these conditions are met, the algorithm
 will achieve its guarantees. Let $\phi(i)$ be the value of the potential function after assigning the $i$-th variable. Then we need $\phi$ to satisfy the following properties:
@@ -114,7 +114,7 @@ will achieve its guarantees. Let $\phi(i)$ be the value of the potential functio
 \begin{itemize}
 	\item $\phi(0) \leq 3(W-\text{OPT})$
 	\item $\phi(n) \geq 0$
-	\item For each $x_i$, the algorithm randomly determines a truth assignment to $x_i$ such that 
+	\item For each $x_i$, the algorithm randomly determines a truth assignment to $x_i$ such that
 \begin{equation}
 \begin{aligned}
 \label{eq:2}
@@ -125,12 +125,12 @@ will achieve its guarantees. Let $\phi(i)$ be the value of the potential functio
 \end{itemize}
 
 If we have such a potential function, then $\mathbb{E}[\text{SAT}(n)- 3\left(W-\text{SAT}(n)\right)] \geq \phi(n) - \phi(0) \geq 3(W-\text{OPT})$.
-This directly implies $\mathbb{E}[\text{SAT}(n)] \geq \frac{3}{4} W \geq \frac{3}{4} \text{OPT}$. 
+This directly implies $\mathbb{E}[\text{SAT}(n)] \geq \frac{3}{4} W \geq \frac{3}{4} \text{OPT}$.
 
-We utilize the rest of this section to introduce some notation that will be useful for sections 3 and 4. 
-Let $x_i^*$ be the optimal assignment of $x_i$ and $x_i^{a}$ be the algorithm's assignment. We say a clause is alive 
-at time $i$ if it contains some literal $x_j$ with $j > i$ and it is not yet satisfied by $x_1^a,...,x_i^a$. 
-We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1^a,...,x_i^a,x_{i+1}^*,...,x_n^*$. 
+We utilize the rest of this section to introduce some notation that will be useful for sections 3 and 4.
+Let $x_i^*$ be the optimal assignment of $x_i$ and $x_i^{a}$ be the algorithm's assignment. We say a clause is alive
+at time $i$ if it contains some literal $x_j$ with $j > i$ and it is not yet satisfied by $x_1^a,...,x_i^a$.
+We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1^a,...,x_i^a,x_{i+1}^*,...,x_n^*$.
 
 \section{Poloczek and Schtinger's approach.}
 
@@ -138,7 +138,7 @@ Here we present Poloczek and Shcnitger's 2011 Algorithm. Their approach is based
 
 \subsection{Johnson's Deterministic Algorithm}
 
-Consider, as mentioned above, the scaled clause weight. For a clause $C_j$, with weight $w_j$, we have the modified weight:  $f(C_j) = w_j 2^{-|C_j|}$. 
+Consider, as mentioned above, the scaled clause weight. For a clause $C_j$, with weight $w_j$, we have the modified weight:  $f(C_j) = w_j 2^{-|C_j|}$.
 
 Johnson's Algorithm processes the variables in an arbitrary (random?) order, and assigns them a value of 0 or 1 as follows. Let $x$ be the variable being assigned a value. We define the \textbf{support} of $x$, $\mu_x$ to be the sum of the scaled weights of clauses containing $x$. Similarly, $\mu_{\bar{x}}$ is the sum of scaled weights of clauses containing $\bar{x}$:
 
@@ -156,7 +156,7 @@ $$ \Pr[\text{assign } x=1] = \frac{\mu_x}{\mu_x + \mu_{\bar{x}}}$$, and $x$ equa
 The approximation ratio of CR algorithm is upper-bounded by:
 $$\frac{17}{23} < \frac{3}{4}$$
 
-\end{lemma} 
+\end{lemma}
 
 \subsection{Alternative Probabilities}
 Due to Lemma \ref{L:1}, Poloczek and Schnitger decide to use an alternative weighting scheme. In this alternative, every clause with a single variable gets its weight doubled, while the remaining weights are unchanged. Therefore, the new support for $x$ which we can label $\lambda_x$ is:
@@ -200,7 +200,7 @@ Now consider some optimal assignment, $\pi$. Let us define $c(x)$ to be the weig
 \begin{equation}
 E[\text{sat}(i) - 3\cdot\text{unsat}(i)+ 2(c-c')] = E[\text{wounded} + \text{slack} + 2(c-c')] - (w_x + w_{\bar{x}})
 \end{equation}
-If we can manage to find $p_0,p_1$ so that the right side of the equation is always positive, then we have 
+If we can manage to find $p_0,p_1$ so that the right side of the equation is always positive, then we have
 \begin{equation}
 E[\text{sat}(i) - 3\cdot\text{unsat}(i)+ 2(c-c')] \ge 0 \label{C:1}
 \end{equation}
@@ -239,79 +239,79 @@ Thus this value of $\varepsilon$ yields exactly zero for the expression we want 
 
 \section{van Zuyeln's simplified algorithm.}
 
-In this section we present van Zuylen's combinatorial algorithm. 
+In this section we present van Zuylen's combinatorial algorithm.
 
 \begin{lemma}
 Consider the algorithm that sequentially assigns variables $x_1,...,x_n$. Given the assignment of $x_1,...,x_{i-1}$,
  let $W_i, \overline{W_i}$ be the weight of the clauses that are not yet satisfied and contain $x_i, \overline{x_i}$ respectively,
- but do not contain $x_{i+1}, ..., x_n$. Let $F_i, \overline{F_i}$ be the total weight of the clauses that are not yet satisfied 
- that contain $x_i, \overline{x_i}$ respectively. Let $\alpha = \frac{W_i + F_i - \overline{W_i}}{F_i + \overline{F_i}}$, and let $x_i$ be set to true with probability 
+ but do not contain $x_{i+1}, ..., x_n$. Let $F_i, \overline{F_i}$ be the total weight of the clauses that are not yet satisfied
+ that contain $x_i, \overline{x_i}$ respectively. Let $\alpha = \frac{W_i + F_i - \overline{W_i}}{F_i + \overline{F_i}}$, and let $x_i$ be set to true with probability
 
 \begin{displaymath}
   p = \left\{
      \begin{array}{lr}
        0 & : \alpha \leq 0\\
-       \alpha & : \alpha \in (0,1) \\ 
+       \alpha & : \alpha \in (0,1) \\
        1 & : \alpha \geq 1.
      \end{array}
    \right.
-\end{displaymath}  
-Then the expected weight of the clauses satisfied by the algorithm is at least $\frac{3}{4} \text{OPT}$. 
-\end{lemma} 
+\end{displaymath}
+Then the expected weight of the clauses satisfied by the algorithm is at least $\frac{3}{4} \text{OPT}$.
+\end{lemma}
 
 \begin{proof}
 We will present a potential function $\phi$ such that it meets the criterion before. Our potential function will always
- be at least twice the weight of the clauses that are alive and contradictory at time $i$. Note that at time $0$, 
- $\phi(0) = 2(W-\text{OPT})$. It is clear that the first two conditions will be met, so we will focus on showing \ref{eq:2}. 
- For this purpose we will lower bound the weight of the contradictory clauses at time $i-1$ that are not alive at time $i$ 
- and upper bound the weight of the clauses that become contradictory at time $i$. 
+ be at least twice the weight of the clauses that are alive and contradictory at time $i$. Note that at time $0$,
+ $\phi(0) = 2(W-\text{OPT})$. It is clear that the first two conditions will be met, so we will focus on showing \ref{eq:2}.
+ For this purpose we will lower bound the weight of the contradictory clauses at time $i-1$ that are not alive at time $i$
+ and upper bound the weight of the clauses that become contradictory at time $i$.
 
-Note that a clause that is contradictory at time $i-1$ is no longer contradictory at time $i$ when either it becomes satisfied 
+Note that a clause that is contradictory at time $i-1$ is no longer contradictory at time $i$ when either it becomes satisfied
 or it contains literals $x_j$, $j > i$. Therefore a lower bound for the weight of contradictory clauses alive at time $i-1$ and
  not alive at time $i$ by $W_i \mathsf{1}_{x_i^* = 0} + \overline{W_i} \mathsf{1}_{x_i^* = 1}$.
 
 Similarly, the only clauses that can become contradictory at time $i$ are those that are still alive at time $i-1$ and become unsatisfied
- by the asigning $x_i$ to contradict $x_i^*$. Therefore, we can upper bound the weight of clauses that become contradictory by 
+ by the asigning $x_i$ to contradict $x_i^*$. Therefore, we can upper bound the weight of clauses that become contradictory by
  $F_i \mathsf{1}_{x_i^* = 1} (1-p) + \overline{F_i} \mathsf{1}_{x_i^* = 0}p$.
 
-Then we get an upper bound on the change in potential 
+Then we get an upper bound on the change in potential
 
 \begin{equation}
 \label{eq:3}
 \phi(i) - \phi(i-1) \leq 2(-W_i + \overline{F_i} p) \mathsf{1}_{x_i^* = 0} + 2(-\overline{W_i} + F_i(1-p))\mathsf{1}_{x_i^* = 1}
 \end{equation}
 
-On the other hand 
+On the other hand
 
 \begin{equation}
 \begin{aligned}
 \label{eq:4}
-& \text{SAT}(i) - \text{SAT}(i-1) - 3(\text{UNSAT}(i) - \text{UNSAT}(i-1)) \\ 
-& = p(W_i + F_i - 3\overline{W_i}) + (1-p)(\overline{W_i} + \overline{F_i} - 3W_i) 
+& \text{SAT}(i) - \text{SAT}(i-1) - 3(\text{UNSAT}(i) - \text{UNSAT}(i-1)) \\
+& = p(W_i + F_i - 3\overline{W_i}) + (1-p)(\overline{W_i} + \overline{F_i} - 3W_i)
 \end{aligned}
 \end{equation}
 
 We will show that $(\ref{eq:4}) \geq (\ref{eq:3})$ by showing an upper bound $B$ on the right hand side of (\ref{eq:3}) such that $(\ref{eq:4}) \geq B \geq (\ref{eq:3})$.
 
-Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then (\ref{eq:3}) $ = -2W_i \mathsf{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathsf{1}_{x_i^* = 1} 
-\leq  -2W_i \mathsf{1}_{x_i^* = 0} - 2W_i \mathsf{1}_{x_i^* = 0} = -2W_i$. Then the right hand side of (\ref{eq:4}) is at least $\overline{W_i} + \overline{F_i} - 3W_i + 2W_i = 
-\overline{W_i} + \overline{F_i} - W_i$. But this quantity can't be negative, because if it were we would combine it with $W_i + F_i - \overline{W_i} \leq 0$ to obtain $F_i + 
-\overline{F_i} < 0$, a contradiction. 
+Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then (\ref{eq:3}) $ = -2W_i \mathsf{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathsf{1}_{x_i^* = 1}
+\leq  -2W_i \mathsf{1}_{x_i^* = 0} - 2W_i \mathsf{1}_{x_i^* = 0} = -2W_i$. Then the right hand side of (\ref{eq:4}) is at least $\overline{W_i} + \overline{F_i} - 3W_i + 2W_i =
+\overline{W_i} + \overline{F_i} - W_i$. But this quantity can't be negative, because if it were we would combine it with $W_i + F_i - \overline{W_i} \leq 0$ to obtain $F_i +
+\overline{F_i} < 0$, a contradiction.
 
-Consider now the case where $\alpha = 1$, i.e. $W_i + F_i -\overline{W_i} \geq \overline{F_i} + F_i$ or $W_i - \overline{F_i} \geq \overline{W_i}$. 
-We can notice that (\ref{eq:3}) $= 2(-W_i + \overline{F_i}) \leq -2\overline{W_i}$. On the other hand, the right hand side of  $(\ref{eq:4)}$ 
-is at least $W_i + F_i + 2\overline{W_i} -3\overline{W_i} = W_i + F_i - \overline{W_i}$ which is at least $0$ since otherwise we would get 
-that $F_i + \overline{F_i} < 0$, a contradiction. 
+Consider now the case where $\alpha = 1$, i.e. $W_i + F_i -\overline{W_i} \geq \overline{F_i} + F_i$ or $W_i - \overline{F_i} \geq \overline{W_i}$.
+We can notice that (\ref{eq:3}) $= 2(-W_i + \overline{F_i}) \leq -2\overline{W_i}$. On the other hand, the right hand side of  $(\ref{eq:4)}$
+is at least $W_i + F_i + 2\overline{W_i} -3\overline{W_i} = W_i + F_i - \overline{W_i}$ which is at least $0$ since otherwise we would get
+that $F_i + \overline{F_i} < 0$, a contradiction.
 
-We now proceed with the more general case. The analysis is similar to the previous cases and will be left as an exercise 
-for the reader to save space and prevent further cluttering. 
+We now proceed with the more general case. The analysis is similar to the previous cases and will be left as an exercise
+for the reader to save space and prevent further cluttering.
 
 \end{proof}
 
 \section{Limits of Randomness.}
 \section{Open questions.}
- 
-\bibliography{18-416-FP.bib} 
+
+\bibliography{18-416-FP.bib}
 \bibliographystyle{plain}
 \end{document}
 	% line of code telling latex that your document is ending. If you leave this out, you'll get an error
