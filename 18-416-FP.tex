@@ -30,8 +30,11 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \numberwithin{theorem}{section}
 
-% Make life easier.
+% Make life easier and use nicer looking greek letters, etc.
 \newcommand{\ol}{\overline}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\emptyset}{\varnothing}
 
 
 \begin{document}
@@ -89,7 +92,6 @@ the greedy approach the two algorithms share,
 showing that the previous algorithms are in some sense optimal
 and, more strikingly,
 that no better than a $0.729$-approxmation is possible without randomness.
-In Section \ref{S:open}, we mention some open problems that have been posed recently.
 
 
 \section{The General Idea}\label{S:idea}
@@ -337,7 +339,6 @@ that $F_i + \overline{F_i} < 0$, a contradiction.
 
 We now proceed with the more general case. The analysis is similar to the previous cases and will be left as an exercise
 for the reader to save space and prevent further cluttering.
-
 \end{proof}
 
 
@@ -353,24 +354,29 @@ mimicking much of Poloczek's notation and terminology.
 
 Our first order of business is to make ``greedy approach'' precise.
 To do this, we imagine the input as being of a series of \emph{data items},
-Each data item corresponds to a variable $x$
-and contains a list of the following information
-for each clause $c$ that $x$ appears in:
+each of which corresponds to a variable $x$,
+which must be assigned permanently before moving on to the next data item.
+A data item for $x$ contains a list of the following information
+for each undecided clause $c$ that $x$ appears in:
 \begin{itemize}
 \item
   the sign of $x$ in $c$ (whether $x$ or $\ol{x}$ is in $c$),
 \item
   the weight of $c$,
 \item
-  a list of the other variables (without sign information) in $c$.
+  a list of the other unassigned variables (without sign information) in $c$.
 \end{itemize}
-We consider two types of algorithms that consider data items one at a time
-and permanently assign the variable of each data item before seeing the next.
+Additionally, identical clauses are merged by adding their weights.
+Note that data items depend on what has been assigned so far.
+
 An \emph{online greedy algorithm},
 such as those from Sections \ref{S:PS} and \ref{S:vZ},
 is given the data items in some adversarial order,
 while an \emph{adaptive greedy algorithm}
-can choose the data item it would like to see next.
+can choose at each step the sort of data item it would like to see next.
+(Specifically, at each step,
+it gives an ordering $\prec$ on all possible data items
+and is given $\prec$-minimal remaining data item.)
 We know that online greedy algorithms can achieve $3/4$-approximations,
 but we might hope that cleverer choice of weights
 (e.g. $\alpha$ in van Zuyeln's algorithm)
@@ -382,7 +388,7 @@ Alas, no such cleverness is possible.
   is better than a $3/4$-approximation in expectation.
 \end{theorem}
 
-A small example (see \cite{DBLP:conf/esa/Poloczek11}) example shows that
+A small example (see \cite{DBLP:conf/esa/Poloczek11}) shows that
 deterministic online greedy algorithms cannot do better than $2/3$,
 and even even if we allow them to be adaptive, we still can't reach $3/4$.
 
@@ -407,6 +413,9 @@ we say an (in)equivalence is satisfied
 when it contributes weight 2 rather than only weight 1.
 
 \begin{proof}[Proof of Theorem \ref{theorem:greedyRandomized}]
+  The construction given here is original
+  but uses the same idea as that in \cite{DBLP:conf/esa/Poloczek11}.
+
   We use Yao's minimax principle \cite{Yao}
   and give a distribution of inputs
   such that no deterministic algorithm gives better than a $3/4$-approximation
@@ -459,8 +468,63 @@ The proof of Theorem \ref{theorem:greedyDeterministic} is in similar style.
 We give a sketch here and refer the reader
 to \cite{PoloczekVideo} and \cite{DBLP:conf/esa/Poloczek11} for more details.
 
+Given a deterministic adaptive greedy algorithm,
+we will adversarially construct an input for which it has
+a low approximation ratio.
+The construction uses $n$ variables and proceeds in two phases,
+during the first of which $G \approx n/5$ variables will be assigned.
+We distinguish between these $G$ phase I variables
+and the remaining $n-G$ phase II variables.
+The clause set consists of an (in)equivalence between every pair of variables
+and some one-variable clauses,
+all of which have equal weight.
+We can delay the decisions of whether a particular (in)equivalence
+is an equivalence or inequivalence
+and of exactly which one-variable clauses we will include.
+We have to be careful to make sure that
+the adaptive algorithm can't force us to reveal the data item
+of a phase II variable while phase I is still happening,
+but we don't concern ourselves with these details for this sketch.
 
-\section{Open Questions}\label{S:open}
+At any stage of the algorithm, every phase II variable $x$
+has a ``score'' $(a(x),b(x))$
+defined as follows:
+if we think of reducing a clauses using the values of assigned variables,
+e.g.\ reducing $x \lor y$ to $y$ if $x = 0$,
+then $a(x)$ and $b(x)$ are
+the numbers of $\ol{x}$ and $x$ clauses, respectively.
+We eventually have to assign $x$,
+at which point at least $\min\{a(x),b(x)\}$ clauses will be unsatisfied.
+We supply one-variable clauses at the start to give each phase II variable
+a starting score of either $(0,G)$ or $(G,0)$.
+
+During phase I,
+each phase I variable $x$ is assigned to either 0 or 1
+by the deterministic algorithm.
+In response to that assignment,
+we determine the (in)equivalence between $x$ and each phase II variable $y$
+such that neither $a(y)$ nor $b(y)$ exceeds $G$.
+For example, if $x$ is assigned 0 and $y$ has score $(0,G)$,
+we would make an equivalence between $x$ and $y$,
+because that equivalence consists of $\ol{x} \lor y$,
+which is satisfied by $x = 0$,
+and $x \lor \ol{y}$, which becomes $\ol{y}$ when $x = 0$,
+increasing $a(y)$ to 1.
+This means that every phase II variable has score $(G,G)$
+at the end of phase I.
+In phase II, we decide (in)equivalences in response to assignments
+such that $a(x)$ and $b(x)$ never differ by more than 1
+for any phase II variable $x$,
+which maximizes the minimum number of clauses
+each assignment will unsatisfy.
+It remains to be shown that the optimal assignment
+is sufficiently better than the assignment given by the algorithm,
+that we can treat phase I and phase II variables so differently
+without the adaptivity of the algorithm getting in the way,
+and that we can delay the decisions we delay without contradicting ourselves.
+As mentioned earlier,
+\cite{PoloczekVideo} and \cite{DBLP:conf/esa/Poloczek11}
+address these details.
 
 
 \bibliography{18-416-FP.bib}
