@@ -420,7 +420,33 @@ when it contributes weight 2 rather than only weight 1.
   This means a deterministic algorithm will always assign
   the same sequence of 0s and 1s
   to the variables of the first $2n$ data items.
+  Suppose the algorithm assigns fraction $p$ of the variables to 0.
+  Two distinct variables in $X$ are assigned different values
+  with probability
+  \[
+    p\bigg(1-\frac{np-1}{n-1}\bigg) + (1-p)\frac{np-1}{n-1}
+    = 2p(1-p) \pm O\bigg(\frac{1}{n}\bigg),
+  \]
+  and each such pair contributes to an unsatisfied clause
+  because we cannot have $b = z = 1-b$.
+  Similarly, a variable in $X$ and a variable in $Y$
+  are assigned the same value with probability
+  \[
+    p\frac{np-1}{n-1} + (1-p)\bigg(1-\frac{np-1}{n-1}\bigg)
+    = 1 - 2p(1-p) \pm O\bigg(\frac{1}{n}\bigg),
+  \]
+  and each such pair contributes to an unsatisfied clause
+  because we cannot have $b = z \neq b$.
+  Therefore, the expected number of unsatisfied clauses
+  is at least $n^2 - O(n)$,
+  which, for any $\epsilon > 0$,
+  is a $1/4 - \epsilon$ fraction of all $4n^2$ clauses
+  for sufficiently large $n$.
 \end{proof}
+
+The proof of Theorem \ref{theorem:greedyDeterministic} is in similar style.
+We give a sketch here and refer the reader
+to \cite{PoloczekVideo} and \cite{DBLP:conf/esa/Poloczek11} for more details.
 
 
 \section{Open Questions}\label{S:open}
