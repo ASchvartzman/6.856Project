@@ -11,7 +11,6 @@
 \usepackage{complexity}
 \usepackage{amssymb}
 \usepackage{amsthm}
-\newtheorem{lemma}{Lemma}
 % This gave Ziv a compile error: \usepackage[inputenc]{utf8}
 \usepackage[charter]{mathdesign} % Ziv likes this font....
 \usepackage[english]{babel}
@@ -26,6 +25,13 @@
 
 \usepackage{fullpage}
 	% package that specifies normal margins
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\numberwithin{theorem}{section}
+
+% Make life easier.
+\newcommand{\ol}{\overline}
 
 
 \begin{document}
@@ -115,7 +121,7 @@ Adding these inequalities over all $i$ we get that
 \end{aligned}
 \end{equation*}
 
-From this we get that our algorithms approximation ratio, $\mathrm{SAT}(n)$, is at least $\frac{3}{4}$ of the maximum possible weight $W$.
+From this we get that our algorithms approximation ratio, $\textrm{SAT}(n)$, is at least $\frac{3}{4}$ of the maximum possible weight $W$.
 
 There might not always exist an assignment for $i$ such that the equation (cite) above holds. However, we only need it to hold on aggregate.
 This is why the notion of a potential function $\phi$ is introduced. Throughout the algorithm, we will use the potential function to help us pay
@@ -125,7 +131,7 @@ Van Zuylen explains the desired behavior of this potential function in terms of 
 will achieve its guarantees. Let $\phi(i)$ be the value of the potential function after assigning the $i$-th variable. Then we need $\phi$ to satisfy the following properties:
 
 \begin{itemize}
-	\item $\phi(0) \leq 3(W-\mathrm{OPT})$
+	\item $\phi(0) \leq 3(W-\textrm{OPT})$
 	\item $\phi(n) \geq 0$
 	\item For each $x_i$, the algorithm randomly determines a truth assignment to $x_i$ such that
 \begin{equation}
@@ -137,8 +143,8 @@ will achieve its guarantees. Let $\phi(i)$ be the value of the potential functio
 \end{equation}
 \end{itemize}
 
-If we have such a potential function, then $\mathbb{E}[\mathrm{SAT}(n)- 3\left(W-\mathrm{SAT}(n)\right)] \geq \phi(n) - \phi(0) \geq 3(W-\mathrm{OPT})$.
-This directly implies $\mathbb{E}[\mathrm{SAT}(n)] \geq \frac{3}{4} W \geq \frac{3}{4} \mathrm{OPT}$.
+If we have such a potential function, then $\mathbb{E}[\textrm{SAT}(n)- 3\left(W-\textrm{SAT}(n)\right)] \geq \phi(n) - \phi(0) \geq 3(W-\textrm{OPT})$.
+This directly implies $\mathbb{E}[\textrm{SAT}(n)] \geq \frac{3}{4} W \geq \frac{3}{4} \textrm{OPT}$.
 
 We utilize the rest of this section to introduce some notation that will be useful for sections 3 and 4.
 Let $x_i^*$ be the optimal assignment of $x_i$ and $x_i^{a}$ be the algorithm's assignment. We say a clause is alive
@@ -150,7 +156,7 @@ We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1
 
 Here we present Poloczek and Shcnitger's algorithm. Their approach is based on randomizing Johnson's algorithm.
 
-\subsection{Johnson's Deterministic Algorithm}
+\subsection*{Johnson's Deterministic Algorithm}
 
 Consider, as mentioned above, the scaled clause weight. For a clause $C_j$, with weight $w_j$, we have the modified weight:  $f(C_j) = w_j 2^{-|C_j|}$.
 
@@ -161,7 +167,7 @@ Johnson's Algorithm processes the variables in an arbitrary order, and assigns t
 \end{align*}
 Johnson's Algorithm greedily assigns $x=1$ if and only if $\mu_x \ge \mu_{\bar{x}}$.
 
-\subsection{The Canonical Randomization}
+\subsection*{The Canonical Randomization}
 Poloczek and Schnitger consider the \emph{Canonical Randomization} (CR) of Johnson's Algorithm. Instead of deterministically assigning a value to the variable $x$, we assign it a value of 1 with probability proportional to the support of $x$ relative to that of $\bar{x}$. So
 \[\Pr[\mathrm{assign } x=1] = \frac{\mu_x}{\mu_x + \mu_{\bar{x}}},\] and $x$ equals zero with the remaining probability. They prove the limits of this approach. We state their result without proof. 
 
@@ -172,14 +178,14 @@ $$\frac{17}{23} < \frac{3}{4}$$
 
 \end{lemma}
 
-\subsection{Alternative Probabilities}
+\subsection*{Alternative Probabilities}
 Due to Lemma \ref{L:1}, Poloczek and Schnitger decide to use an alternative weighting scheme. In this alternative, every clause with a single variable gets its weight doubled, while the remaining weights are unchanged. Therefore, the new support for $x$ which we can label $\lambda_x$ is:
-\[[\mathrm{sum of weights of clauses with }x\mathrm{ with }\ge 2\mathrm{ variables}] + 2[\mathrm{sum of weights of clause containing just }x].\]
+\[[\textrm{sum of weights of clauses with }x\textrm{ with }\ge 2\textrm{ variables}] + 2[\textrm{sum of weights of clause containing just }x].\]
 
 If we call the first sum $\mathsf{fanin}$, and label the second sum $w_x$, then:
 \begin{eqnarray*}
-\lambda_x \equiv \mathrm{Support for } x = \mathsf{fanin} + 2w_x\\
-\lambda_{\bar{x}} \equiv \mathrm{Support for } \bar{x} = \mathsf{fanout} + 2w_{\bar{x}}
+\lambda_x \equiv \textrm{Support for } x = \mathsf{fanin} + 2w_x\\
+\lambda_{\bar{x}} \equiv \textrm{Support for } \bar{x} = \mathsf{fanout} + 2w_{\bar{x}}
 \end{eqnarray*}
 Finally, we define $\Delta$ to be the sum of the supports, so $\Delta = \lambda_{x} + \lambda_{\bar{x}} = \mathsf{fanin} + 2w_x + \mathsf{fanout} + 2w_{\bar{x}}$. If we do a canonical randomization  using the new weight functions, we see that
 \begin{eqnarray*}
@@ -188,7 +194,7 @@ q_1 &:=& \Pr[x=1] = \frac{\mathsf{fanin} + 2w_x}{\Delta}
 \end{eqnarray*}
 Note that for a $2-\text{CNF}$ formula, these alternative weights are exactly equivalent to the weights used in Johnson's Algorithm. Thus, these modified weights still don't guarantee a $\frac{3}{4}$ approximation ratio.
 
-\subsection{Slack Algorithm}
+\subsection*{Slack Algorithm}
 The general approach of this algorithm is to change the probabilities, $q_0, q_1$ with which we assign values to $x$. In a sense, we're making the algorithm "less random" by increasing the higher of the two probabilities, bringing it closer to 1, and decreasing the lower of the two probabilities.
 
 Assume w.l.o.g that $q_0 \le q_1$, so $x$ is at least as likely to assigned a value of 1. We now define the modified probabilities: $p_1 = q_1 + \varepsilon$, $p_0 = q_0 - \varepsilon$. We will show that for a good choice of $\varepsilon$, these probabilities yield a $\frac{3}{4}$ approximation. Doing this requires proving a few lemmas which Poloczek and Schnitger do in their paper. In order to better show the logical progression, we will defer some of the proofs to the end.
@@ -199,40 +205,40 @@ For any variable $x$, we define the random variable $\mathsf{slack}$ to be the m
 \end{equation}
 Let $x$ be the $i^{th}$ variable fixed. Following our notation in the introduction, let SAT($i$), UNSAT($i$) be random variables that denote the weight of all clauses that are satisfied, and unsatisfiable once we fix $x$, respectively. It follows that
 \begin{eqnarray}
-E[\mathrm{sat}(i)] &=& p_0(\mathsf{fanout} + 2w_{\bar{x}}) + p_1(\mathsf{fanin} + 2w_{x})\\
-E[\mathrm{unsat}(i)] &=& p_0w_x + p_1w_{\bar{x}}
+E[\textrm{sat}(i)] &=& p_0(\mathsf{fanout} + 2w_{\bar{x}}) + p_1(\mathsf{fanin} + 2w_{x})\\
+E[\textrm{unsat}(i)] &=& p_0w_x + p_1w_{\bar{x}}
 \end{eqnarray}
 Now, we call a clause, $C$ containing $x$ or its negation \textit{alive} iff after assigning a value to $x$, $C$ still has not been satisfied or falsified. Further, we define the random variable ``wounded" to be the sum of the weights of all alive clauses. Therefore
 \begin{equation}
-E[\mathrm{wounded}] = p_0 \cdot \mathsf{fanin} + p_1 \cdot \mathsf{fanout}
+E[\textrm{wounded}] = p_0 \cdot \mathsf{fanin} + p_1 \cdot \mathsf{fanout}
 \end{equation}
 Now Poloczek and Schnitger prove the following Lemma:
 \begin{lemma} \label{L:2}
-$E[\mathrm{sat}(i) - 3\cdot\mathrm{unsat}(i)] = E[\mathrm{wounded} + \mathsf{slack}] - (w_x + w_{\bar{x}})$
+$E[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)] = E[\textrm{wounded} + \mathsf{slack}] - (w_x + w_{\bar{x}})$
 \end{lemma}
 Now consider some optimal assignment, $\pi$. Let us define $c(x)$ to be the weight of alive clauses that are not satisfied by $\pi$ before assigning a value to $x$, and $c'(x)$ be that same quantity after we assign a value to $x$. By linearity of expectations, we can add the quantity $2(c-c')$ to both sides of the equation of lemma \ref{L:2}, yielding:
 \begin{equation}
-E[\mathrm{sat}(i) - 3\cdot\mathrm{unsat}(i)+ 2(c-c')] = E[\mathrm{wounded} + \mathsf{slack} + 2(c-c')] - (w_x + w_{\bar{x}})
+E[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] = E[\textrm{wounded} + \mathsf{slack} + 2(c-c')] - (w_x + w_{\bar{x}})
 \end{equation}
 If we can manage to find $p_0,p_1$ so that the right side of the equation is always positive, then we have
 \begin{equation}
-E[\mathrm{sat}(i) - 3\cdot\mathrm{unsat}(i)+ 2(c-c')] \ge 0 \label{C:1}
+E[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] \ge 0 \label{C:1}
 \end{equation}
 This condition can be rewritten as:
 \begin{equation}
-E[(\mathrm{SAT}(i) - \mathrm{SAT}(i-1)) - 3\cdot(\mathrm{UNSAT}(i) - \mathrm{UNSAT}(i-1))] \ge  2(c'-c) \ge 0
+E[(\textrm{SAT}(i) - \textrm{SAT}(i-1)) - 3\cdot(\textrm{UNSAT}(i) - \textrm{UNSAT}(i-1))] \ge  2(c'-c) \ge 0
 \end{equation}
 Which is exactly the condition we stated both algorithms satisfy. Adding this up over all variables yields a telescoping sum, which cancels to
 \begin{eqnarray}
-E[\mathrm{SAT}(n)] - 3E[\mathrm{UNSAT}(n)] - 2(W-\mathrm{OPT}) \ge 0
-\\4E[SAT] \ge W + 2\mathrm{OPT} \ge 3\mathrm{OPT}
+E[\textrm{SAT}(n)] - 3E[\textrm{UNSAT}(n)] - 2(W-\textrm{OPT}) \ge 0
+\\4E[SAT] \ge W + 2\textrm{OPT} \ge 3\textrm{OPT}
 \end{eqnarray}
 So the algorithm will have a $\frac{3}{4}$ approximation ratio if \ref{C:1} is satisfied. To achieve this, the next lemma is useful:
 \begin{lemma} \label{L:3}
 Assume our assignment probabilities for $x$ are $\Pr[x = 1] = p_1, \Pr[x=0] = p_0$. If the optimal assignment is $x=1$, then:
-\[E[\mathrm{wounded} - 2(c'-c)] - (w_x - w_{\bar{x}}) \ge \frac{\mathsf{slack}}{\Delta}(w_x - w_{\bar{x}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
+\[E[\textrm{wounded} - 2(c'-c)] - (w_x - w_{\bar{x}}) \ge \frac{\mathsf{slack}}{\Delta}(w_x - w_{\bar{x}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
 If the optimal assignment is  $x=0$, then:
-\[E[\mathrm{wounded} - 2(c'-c)] - (w_x - w_{\bar{x}}) \ge \frac{\mathsf{slack}}{\Delta}(w_x - w_{\bar{x}}) - \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
+\[E[\textrm{wounded} - 2(c'-c)] - (w_x - w_{\bar{x}}) \ge \frac{\mathsf{slack}}{\Delta}(w_x - w_{\bar{x}}) - \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
 \end{lemma}
 The proof of this lemma involves quite a bit of algebra and is therefore omitted here. The consequence of this lemma, though, is that we can use it to find a value for $\varepsilon$ so that  \ref{C:1} is always satisfied.
 
@@ -244,12 +250,12 @@ E[\mathsf{slack}] &=& (p_1-p_0)\cdot ((\mathsf{fanout} + 2w_{\bar{x}}) -(\mathsf
 \\&=& \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack}
 \end{eqnarray}
 Plugging this into \ref{C:1}, and applying \ref{L:3}, we get that if $x=1$ is the optimal assignment,
-\[E[\mathrm{sat}(i) - 3\cdot\mathrm{unsat}(i)+ 2(c-c')] \ge \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack} - \frac{\mathsf{slack}}{\Delta}(w_x + w_{\bar{x}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout})\].
+\[E[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] \ge \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack} - \frac{\mathsf{slack}}{\Delta}(w_x + w_{\bar{x}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout})\].
 Setting the this expression equal to zero and solving for $\varepsilon$ yields
 \begin{equation}
 \varepsilon = \varepsilon_1 \equiv \frac{-\frac{\mathsf{slack}^2}{\Delta} + \frac{\mathsf{slack}}{\Delta}(w_x + w_{\bar{x}})}{2\mathsf{slack}+ \mathsf{fanout} + \mathsf{fanin}}
 \end{equation}
-Thus this value of $\varepsilon$ yields exactly zero for the expression we want to be nonnegative. It's easy to check this also works for the case when $x=0$ is an optimal assignment. So, for every variable, we calculate $q_1, q_0$, calculate $\varepsilon_1$, and use it to get $P_1, p_0$. Then we assign $x=1$ with probability $p_1$. As we've just shown, this yields $E[SAT] \ge \frac{3}{4}\mathrm{OPT}$.
+Thus this value of $\varepsilon$ yields exactly zero for the expression we want to be nonnegative. It's easy to check this also works for the case when $x=0$ is an optimal assignment. So, for every variable, we calculate $q_1, q_0$, calculate $\varepsilon_1$, and use it to get $P_1, p_0$. Then we assign $x=1$ with probability $p_1$. As we've just shown, this yields $E[SAT] \ge \frac{3}{4}\textrm{OPT}$.
 
 
 \section{van Zuyeln's Simplified Algorithm}\label{S:vZ}
@@ -271,13 +277,13 @@ Consider the algorithm that sequentially assigns variables $x_1,...,x_n$. Given 
      \end{array}
    \right.
 \end{displaymath}
-Then the expected weight of the clauses satisfied by the algorithm is at least $\frac{3}{4} \mathrm{OPT}$.
+Then the expected weight of the clauses satisfied by the algorithm is at least $\frac{3}{4} \textrm{OPT}$.
 \end{lemma}
 
 \begin{proof}
 We will present a potential function $\phi$ such that it meets the criterion before. Our potential function will always
  be at least twice the weight of the clauses that are alive and contradictory at time $i$. Note that at time $0$,
- $\phi(0) = 2(W-\mathrm{OPT})$. It is clear that the first two conditions will be met, so we will focus on showing \ref{eq:2}.
+ $\phi(0) = 2(W-\textrm{OPT})$. It is clear that the first two conditions will be met, so we will focus on showing \ref{eq:2}.
  For this purpose we will lower bound the weight of the contradictory clauses at time $i-1$ that are not alive at time $i$
  and upper bound the weight of the clauses that become contradictory at time $i$.
 
@@ -301,7 +307,7 @@ On the other hand
 \begin{equation}
 \begin{aligned}
 \label{eq:4}
-& \mathrm{SAT}(i) - \mathrm{SAT}(i-1) - 3(\mathrm{UNSAT}(i) - \mathrm{UNSAT}(i-1)) \\
+& \textrm{SAT}(i) - \textrm{SAT}(i-1) - 3(\textrm{UNSAT}(i) - \textrm{UNSAT}(i-1)) \\
 & = p(W_i + F_i - 3\overline{W_i}) + (1-p)(\overline{W_i} + \overline{F_i} - 3W_i)
 \end{aligned}
 \end{equation}
@@ -329,13 +335,92 @@ for the reader to save space and prevent further cluttering.
 Poloczek showed in \cite{DBLP:conf/esa/Poloczek11} not only that
 the randomized algorithms of the previous two sections
 give the best possible approximation, namely $3/4$,
-of any algorithm using the same approach,
+of any algorithm using the same greedy approach,
 but also that the randomness was necessary for that performance.
 We spend this section explaining these results,
 mimicking much of Poloczek's notation and terminology.
 
-Our first order of business is to make the noation of ``approach'' precise.
+Our first order of business is to make ``greedy approach'' precise.
+To do this, we imagine the input as being of a series of \emph{data items},
+Each data item corresponds to a variable $x$
+and contains a list of the following information
+for each clause $c$ that $x$ appears in:
+\begin{itemize}
+\item
+  the sign of $x$ in $c$ (whether $x$ or $\ol{x}$ is in $c$),
+\item
+  the weight of $c$,
+\item
+  a list of the other variables (without sign information) in $c$.
+\end{itemize}
+We consider two types of algorithms that consider data items one at a time
+and permanently assign the variable of each data item before seeing the next.
+An \emph{online greedy algorithm},
+such as those from Sections \ref{S:PS} and \ref{S:vZ},
+is given the data items in some adversarial order,
+while an \emph{adaptive greedy algorithm}
+can choose the data item it would like to see next.
+We know that online greedy algorithms can achieve $3/4$-approximations,
+but we might hope that cleverer choice of weights
+(e.g. $\alpha$ in van Zuyeln's algorithm)
+could yield a better approximation.
+Alas, no such cleverness is possible.
 
+\begin{theorem}\label{theorem:greedyRandomized}
+  No randomized online greedy algorithm
+  is better than a $3/4$-approximation in expectation.
+\end{theorem}
+
+A small example (see \cite{DBLP:conf/esa/Poloczek11}) example shows that
+deterministic online greedy algorithms cannot do better than $2/3$,
+and even even if we allow them to be adaptive, we still can't reach $3/4$.
+
+\begin{theorem}\label{theorem:greedyDeterministic}
+  No deterministic adaptive greedy algorithm
+  is better than a $\frac{3 + \sqrt{33}}{12}$-approximation.
+\end{theorem}
+
+For the proofs of both of these theorems,
+we will reason at a level of abstraction higher than clauses.
+An \emph{equivalence} between two variables $x$ and $y$
+is the pair of clauses $x \lor \ol{y}$ and $\ol{x} \lor y$.
+Similarly, an \emph{inequivalence} is
+the pair $x \lor y$ and $\ol{x} \lor \ol{y}$.
+If all clauses have weight 1,
+an equivalence contributes weight 2 when $x = y$
+and only weight 1 when $x \neq y$,
+while an inequivalence contributes weight 2 when $x \neq y$
+and only weight 1 when $x = y$.
+Abusing terminology slightly,
+we say an (in)equivalence is satisfied
+when it contributes weight 2 rather than only weight 1.
+
+\begin{proof}[Proof of Theorem \ref{theorem:greedyRandomized}]
+  We use Yao's minimax principle \cite{Yao}
+  and give a distribution of inputs
+  such that no deterministic algorithm gives better than a $3/4$-approximation
+  in expectation.
+  Let $X$, $Y$, and $Z$ be disjoint sets of $n$ variables.
+  All of our inputs have the same set of clauses, all of weight 1:
+  an equivalence of each pair of variables in $X \times Z$
+  and an inequivalence of each pair of variables in $Y \times Z$.
+  Each (in)equivalence is 2 clauses, so this is $4n^2$ clauses in total,
+  $2n^2$ of which are always satisfied
+  and $2n^2$ of which depend on satisfying the (in)equivalences.
+  The randomized input has the $2n$ data items for variables in $X$ and $Y$
+  in a uniformly random order,
+  followed by the $n$ data items for variables in $Z$
+  in some arbitrary fixed order.
+
+  The key is that the data item for a variable has no information about
+  the signs of other variables in its clauses,
+  so variables in $X \cup Y$ are indistinguishable each other
+  because each of them is in exactly 2 clauses with each variable in $Z$,
+  once positive and once negative.
+  This means a deterministic algorithm will always assign
+  the same sequence of 0s and 1s
+  to the variables of the first $2n$ data items.
+\end{proof}
 
 
 \section{Open Questions}\label{S:open}
