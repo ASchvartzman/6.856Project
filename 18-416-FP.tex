@@ -233,7 +233,8 @@ Which is exactly the condition we stated both algorithms satisfy. Adding this up
 E[\textrm{SAT}(n)] - 3E[\textrm{UNSAT}(n)] - 2(W-\textrm{OPT}) \ge 0
 \\4E[SAT] \ge W + 2\textrm{OPT} \ge 3\textrm{OPT}
 \end{eqnarray}
-So the algorithm will have a $\frac{3}{4}$ approximation ratio if \ref{C:1} is satisfied. To achieve this, the next lemma is useful:
+So the algorithm will have a $\frac{3}{4}$ approximation ratio if \ref{C:1} is satisfied. It is worth noting at this point that the term $\mathbb{E}(c'-c)$ is equal to 
+$\mathbb{E}(\phi(i) - \phi(i-1))$ mentioned in the previous section. To achieve the approximation ratio, the next lemma is useful:
 \begin{lemma} \label{L:3}
 Assume our assignment probabilities for $x$ are $\Pr[x = 1] = p_1, \Pr[x=0] = p_0$. If the optimal assignment is $x=1$, then:
 \[E[\textrm{wounded} - 2(c'-c)] - (w_x - w_{\bar{x}}) \ge \frac{\mathsf{slack}}{\Delta}(w_x - w_{\bar{x}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
@@ -314,9 +315,19 @@ On the other hand
 
 We will show that $(\ref{eq:4}) \geq (\ref{eq:3})$ by showing an upper bound $B$ on the right hand side of (\ref{eq:3}) such that $(\ref{eq:4}) \geq B \geq (\ref{eq:3})$.
 
-Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then (\ref{eq:3}) $ = -2W_i \mathsf{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathsf{1}_{x_i^* = 1}
-\leq  -2W_i \mathsf{1}_{x_i^* = 0} - 2W_i \mathsf{1}_{x_i^* = 0} = -2W_i$. Then the right hand side of (\ref{eq:4}) is at least $\overline{W_i} + \overline{F_i} - 3W_i + 2W_i =
-\overline{W_i} + \overline{F_i} - W_i$. But this quantity can't be negative, because if it were we would combine it with $W_i + F_i - \overline{W_i} \leq 0$ to obtain $F_i +
+Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then 
+
+\begin{equation*}
+\begin{aligned}
+(\ref{eq:3}) & = -2W_i \mathsf{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathsf{1}_{x_i^* = 1} \\ 
+& \leq  -2W_i \mathsf{1}_{x_i^* = 0} - 2W_i \mathsf{1}_{x_i^* = 0} = -2W_i.
+\end{aligned}
+\end{equation*} 
+
+Then the right hand side of (\ref{eq:4}) is at least $\overline{W_i} + \overline{F_i} - 3W_i + 2W_i =
+\overline{W_i} + \overline{F_i} - W_i.$ 
+
+But this quantity can't be negative, because if it were we would combine it with $W_i + F_i - \overline{W_i} \leq 0$ to obtain $F_i +
 \overline{F_i} < 0$, a contradiction.
 
 Consider now the case where $\alpha = 1$, i.e. $W_i + F_i -\overline{W_i} \geq \overline{F_i} + F_i$ or $W_i - \overline{F_i} \geq \overline{W_i}$.
@@ -421,10 +432,6 @@ when it contributes weight 2 rather than only weight 1.
   the same sequence of 0s and 1s
   to the variables of the first $2n$ data items.
 \end{proof}
-
-
-\section{Open Questions}\label{S:open}
-
 
 \bibliography{18-416-FP.bib}
 \bibliographystyle{plain}
