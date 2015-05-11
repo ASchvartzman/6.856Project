@@ -54,7 +54,7 @@ In the Maximum Satisfiability Problem (MAX-SAT) we are given a set of boolean va
 and clauses $C_1,...,C_m$ involving them and want an assignment of the variables that satisfies the most clauses.
 In class we analyzed the unweighted case, but here we consider non-negative weights $w_i$ for the clauses
 and ask for the weight of the satisfied clauses to be maximized. This problem, which is a generalization of the
-Boolean Satisfiability Problem (SAT), is also $\NP$-complete.
+Boolean Satisfiability Problem (SAT), is also $\NP$-hard.
 
 This problem has been studied extensively. Let $W = \sum w_i$ be the sum of the clause weights.
 A simple randomized algorithm sets each variable to true with probability $1/2$ and hence,
@@ -98,25 +98,25 @@ Let the input variables be $x_1,...,x_n$ and the input clauses be $C_1,...,C_m$
 each with associated non-negative weights $w_1,...,w_m$. Let $\sum_{i=1}^{m} w_i = W$.
 We are interested in finding an assignment of the variables $x_i$ such that the clauses satisfied have weight at least $\frac{3}{4}W$.
 
-Our algorithm will be sequentially deciding what value to assign to each variable. Let $\textrm{SAT}(i)$ be the total weight of the clauses
-satisfied by our partial assignment $x_1, ..., x_i$ and let $\textrm{UNSAT}(i)$ be the total weight of the clauses that are falsified (i.e. unsatisfiable).
-Suppose we have set variables $x_1,...,x_{i-1}$ and are considering a value for variable $x_i$. Then $\textrm{SAT}(i)-\textrm{SAT}(i-1)$ is the weight
-of the clauses that become satisfied by assigning $x_i$ and similarly $\textrm{UNSAT}(i) - \textrm{UNSAT}(i-1)$ is the weight of the clauses that become
+Our algorithm will be sequentially deciding what value to assign to each variable. Let $\mathrm{SAT}(i)$ be the total weight of the clauses
+satisfied by our partial assignment $x_1, ..., x_i$ and let $\mathrm{UNSAT}(i)$ be the total weight of the clauses that are falsified (i.e. unsatisfiable) by the current partial assignment.
+Suppose we have set variables $x_1,...,x_{i-1}$ and are considering a value for variable $x_i$. Then $\mathrm{SAT}(i)-\mathrm{SAT}(i-1)$ is the weight
+of the clauses that become satisfied by assigning $x_i$ and similarly $\mathrm{UNSAT}(i) - \mathrm{UNSAT}(i-1)$ is the weight of the clauses that become
 unsatisfiable by assigning $x_i$.
-Notice that $\textrm{SAT}(n)$ is the total weight of the clauses satisfied by our algorithm and $\textrm{UNSAT}(n) = W - \textrm{SAT}(n)$ is the weight of clauses
-unsatisfied by the algorithm. Both algorithms we study rely on the following fact to be true to meet their guarantees:
+Notice that $\mathrm{SAT}(n)$ is the total weight of the clauses satisfied by our algorithm and $\mathrm{UNSAT}(n) = W - \mathrm{SAT}(n)$ is the weight of clauses
+unsatisfied by the algorithm. We define sat($i$) = SAT($i$) - SAT($i-1$), unsat($i$) = UNSAT($i$) - UNSAT($i-1$). Both algorithms we study rely on the following fact to be true to meet their guarantees:
 
 \begin{equation}
 \label{eq:1}
-\textrm{SAT}(i)-\textrm{SAT}(i-1) - 3\left(\textrm{UNSAT}(i) - \textrm{UNSAT}(i-1)\right) \geq 0 \forall i
+\mathrm{sat}(i) - 3\mathrm{unsat}(i) \geq 0 \forall i.
 \end{equation}
 
 Adding these inequalities over all $i$ we get that
 
 \begin{equation*}
 \begin{aligned}
-\sum_{i = 1}^{m} \textrm{SAT}(i)-\textrm{SAT}(i-1) - 3\left(\textrm{UNSAT}(i) - \textrm{UNSAT}(i-1)\right)  & = \textrm{SAT}(n) - 3\textrm{UNSAT}(n) \\
-& = 4\textrm{SAT}(n) - 3W \\
+\sum_{i = 1}^{m} \mathrm{sat}(i) - 3\mathrm{unsat}(i) & = \mathrm{SAT}(n) - 3\mathrm{UNSAT}(n) \\
+& = 4\mathrm{SAT}(n) - 3W \\
 & \geq 0
 \end{aligned}
 \end{equation*}
@@ -137,7 +137,7 @@ will achieve its guarantees. Let $\phi(i)$ be the value of the potential functio
 \begin{equation}
 \begin{aligned}
 \label{eq:2}
-\mathbb{E}[\textrm{SAT}(i) - \textrm{SAT}(i-1) - 3\left(\textrm{UNSAT}(i)-\textrm{UNSAT}(i-1)\right)] \\
+\mathbb{E}[\mathrm{sat}(i) - 3\mathrm{unsat}(i)] \\
 \geq \mathbb{E}(\phi(i) - \phi(i-1)].
 \end{aligned}
 \end{equation}
@@ -154,13 +154,13 @@ We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1
 
 \section{Poloczek and Schtinger's approach}\label{S:PS}
 
-Here we present Poloczek and Shcnitger's 2011 Algorithm. Their approach is based on randomizing Johnson's Algorithm.
+Here we present Poloczek and Shcnitger's algorithm. Their approach is based on randomizing Johnson's algorithm.
 
 \subsection*{Johnson's Deterministic Algorithm}
 
 Consider, as mentioned above, the scaled clause weight. For a clause $C_j$, with weight $w_j$, we have the modified weight:  $f(C_j) = w_j 2^{-|C_j|}$.
 
-Johnson's Algorithm processes the variables in an arbitrary (random?) order, and assigns them a value of 0 or 1 as follows. Let $x$ be the variable being assigned a value. We define the \emph{support} of $x$, $\mu_x$ to be the sum of the scaled weights of clauses containing $x$. Similarly, $\mu_{\bar{x}}$ is the sum of scaled weights of clauses containing $\bar{x}$:
+Johnson's Algorithm processes the variables in an arbitrary order, and assigns them a value of 0 or 1 as follows. Let $x$ be the variable being assigned a value. We define the \emph{support} of $x$, $\mu_x$ to be the sum of the scaled weights of clauses containing $x$. Similarly, $\mu_{\bar{x}}$ is the sum of scaled weights of clauses containing $\bar{x}$:
 
 \begin{align*}
 \mu_x = \sum_{C,x\in C}f(C), \,\,\,\, \mu_{\bar{x}} =\sum_{C,\bar{x}\in C}f(C)
@@ -169,7 +169,7 @@ Johnson's Algorithm greedily assigns $x=1$ if and only if $\mu_x \ge \mu_{\bar{x
 
 \subsection*{The Canonical Randomization}
 Poloczek and Schnitger consider the \emph{Canonical Randomization} (CR) of Johnson's Algorithm. Instead of deterministically assigning a value to the variable $x$, we assign it a value of 1 with probability proportional to the support of $x$ relative to that of $\bar{x}$. So
-\[\Pr[\textrm{assign } x=1] = \frac{\mu_x}{\mu_x + \mu_{\bar{x}}}\], and $x$ equals zero with the remaining probability.
+\[\Pr[\mathrm{assign } x=1] = \frac{\mu_x}{\mu_x + \mu_{\bar{x}}},\] and $x$ equals zero with the remaining probability. They prove the limits of this approach. We state their result without proof.
 
 \begin{lemma}
 \label{L:1}
@@ -192,7 +192,7 @@ Finally, we define $\Delta$ to be the sum of the supports, so $\Delta = \lambda_
 q_0 &:=& \Pr[x=0] = \frac{\mathsf{fanout} + 2w_{\bar{x}}}{\Delta}\\
 q_1 &:=& \Pr[x=1] = \frac{\mathsf{fanin} + 2w_x}{\Delta}
 \end{eqnarray*}
-Note that for a $2-CNF$ formula, these alternative weights are exactly equivalent to the weights used in Johnson's Algorithm. Thus, these modified weights still don't guarantee a $\frac{3}{4}$ approximation ratio.
+Note that for a $2-\text{CNF}$ formula, these alternative weights are exactly equivalent to the weights used in Johnson's Algorithm. Thus, these modified weights still don't guarantee a $\frac{3}{4}$ approximation ratio.
 
 \subsection*{Slack Algorithm}
 The general approach of this algorithm is to change the probabilities, $q_0, q_1$ with which we assign values to $x$. In a sense, we're making the algorithm "less random" by increasing the higher of the two probabilities, bringing it closer to 1, and decreasing the lower of the two probabilities.
@@ -203,7 +203,7 @@ For any variable $x$, we define the random variable $\mathsf{slack}$ to be the m
 \begin{equation}
 \mathsf{slack} = |(\mathsf{fanout} + 2w_{\bar{x}}) -(\mathsf{fanin} + 2w_x)|
 \end{equation}
-Let $x$ be the $i^{th}$ variable fixed. Following our notation in the introduction, let SAT($i$), UNSAT($i$) be random variables that denote the weight of all clauses that are satisfied, and unsatisfiable once we fix $x$, respectively. We define sat($i$) = SAT($i$) - SAT($i-1$), sat($i$) = UNSAT($i$) - UNSAT($i-1$). It follows that
+Let $x$ be the $i^{th}$ variable fixed. Following our notation in the introduction, let SAT($i$), UNSAT($i$) be random variables that denote the weight of all clauses that are satisfied, and unsatisfiable once we fix $x$, respectively. It follows that
 \begin{eqnarray}
 E[\textrm{sat}(i)] &=& p_0(\mathsf{fanout} + 2w_{\bar{x}}) + p_1(\mathsf{fanin} + 2w_{x})\\
 E[\textrm{unsat}(i)] &=& p_0w_x + p_1w_{\bar{x}}
@@ -233,7 +233,8 @@ Which is exactly the condition we stated both algorithms satisfy. Adding this up
 E[\textrm{SAT}(n)] - 3E[\textrm{UNSAT}(n)] - 2(W-\textrm{OPT}) \ge 0
 \\4E[SAT] \ge W + 2\textrm{OPT} \ge 3\textrm{OPT}
 \end{eqnarray}
-So the algorithm will have a $\frac{3}{4}$ approximation ratio if \ref{C:1} is satisfied. To achieve this, the next lemma is useful:
+So the algorithm will have a $\frac{3}{4}$ approximation ratio if \ref{C:1} is satisfied. It is worth noting at this point that the term $\mathbb{E}(c'-c)$ is equal to
+$\mathbb{E}(\phi(i) - \phi(i-1))$ mentioned in the previous section. To achieve the approximation ratio, the next lemma is useful:
 \begin{lemma} \label{L:3}
 Assume our assignment probabilities for $x$ are $\Pr[x = 1] = p_1, \Pr[x=0] = p_0$. If the optimal assignment is $x=1$, then:
 \[E[\textrm{wounded} - 2(c'-c)] - (w_x - w_{\bar{x}}) \ge \frac{\mathsf{slack}}{\Delta}(w_x - w_{\bar{x}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
@@ -314,9 +315,19 @@ On the other hand
 
 We will show that $(\ref{eq:4}) \geq (\ref{eq:3})$ by showing an upper bound $B$ on the right hand side of (\ref{eq:3}) such that $(\ref{eq:4}) \geq B \geq (\ref{eq:3})$.
 
-Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then (\ref{eq:3}) $ = -2W_i \mathsf{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathsf{1}_{x_i^* = 1}
-\leq  -2W_i \mathsf{1}_{x_i^* = 0} - 2W_i \mathsf{1}_{x_i^* = 0} = -2W_i$. Then the right hand side of (\ref{eq:4}) is at least $\overline{W_i} + \overline{F_i} - 3W_i + 2W_i =
-\overline{W_i} + \overline{F_i} - W_i$. But this quantity can't be negative, because if it were we would combine it with $W_i + F_i - \overline{W_i} \leq 0$ to obtain $F_i +
+Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then
+
+\begin{equation*}
+\begin{aligned}
+(\ref{eq:3}) & = -2W_i \mathsf{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathsf{1}_{x_i^* = 1} \\
+& \leq  -2W_i \mathsf{1}_{x_i^* = 0} - 2W_i \mathsf{1}_{x_i^* = 0} = -2W_i.
+\end{aligned}
+\end{equation*}
+
+Then the right hand side of (\ref{eq:4}) is at least $\overline{W_i} + \overline{F_i} - 3W_i + 2W_i =
+\overline{W_i} + \overline{F_i} - W_i.$
+
+But this quantity can't be negative, because if it were we would combine it with $W_i + F_i - \overline{W_i} \leq 0$ to obtain $F_i +
 \overline{F_i} < 0$, a contradiction.
 
 Consider now the case where $\alpha = 1$, i.e. $W_i + F_i -\overline{W_i} \geq \overline{F_i} + F_i$ or $W_i - \overline{F_i} \geq \overline{W_i}$.
