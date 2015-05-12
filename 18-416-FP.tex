@@ -8,6 +8,7 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{mathtools}
+\usepackage{bbm}
 \usepackage{complexity}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -38,7 +39,7 @@
 	% line of code telling latex that your document is beginning
 
 
-\title{18.416 Final Project}
+\title{On some recent purely combinatorial 3/4-approximation algorithms for the Maximum Satisfiability Problem}
 
 \author{Jonathan Elzur, Ariel Schvartzman, Ziv Scully \\
   \{\texttt{jelzur}, \texttt{arielsc}, \texttt{ziv}\}\texttt{@mit.edu}}
@@ -47,6 +48,7 @@
 \maketitle
 	% tells latex to follow your header (e.g., title, author) commands.
 
+INSERT ABSTRACT?
 
 \section{Introduction}
 
@@ -68,7 +70,11 @@ approximation ratio of the derandomized algorithm could be improved to $2/3$ \ci
 
 Later, Yanakakis \cite{Yannakakis1994475} and separately Goemans and Williamson \cite{Goemans94new3/4-approximation}
 gave algorithms which achieved $3/4$-approximation ratios. In fact, we studied one of these in class.
-These algorithms relied heavily on linear programming relaxations. In 1999, Williamson posed the question
+These algorithms relied heavily on linear programming relaxations. The best known approximation algorithm due to Avidor, Berkovitch
+and Zwick achieves an approximation ratio of 0.797. The algorithm is a hybrid which runs multiple MAX SAT approximation algorithms
+(including LP based ones) and returns the best. [cite] They also present an algorithm which is conjectured to have a performance of 0.843. 
+
+In 1999, Williamson posed the question
 of whether or not the same approximation ratio could be achieved without using Linear Programming. In 2011,
 Poloczek and Schnitger \cite{Poloczek:2011:RVJ:2133036.2133087} answered this question in the affirmative
 by exhibiting the first purely combinatorial algorithm for MAX-SAT. Their approach is similar to that of Johnson
@@ -282,25 +288,25 @@ Then the expected weight of the clauses satisfied by the algorithm is at least $
 \end{lemma}
 
 \begin{proof}
-We will present a potential function $\phi$ such that it meets the criterion before. Our potential function will always
+We will present a potential function $\phi$ such that it meets the criterion presented in section \ref{S:idea}. Our potential function will always
  be at least twice the weight of the clauses that are alive and contradictory at time $i$. Note that at time $0$,
- $\phi(0) = 2(W-\textrm{OPT})$. It is clear that the first two conditions will be met, so we will focus on showing \ref{eq:2}.
+ $\phi(0) = 2(W-\textrm{OPT})$. It is clear that the first two conditions will be met, so we will focus on showing equation \ref{eq:2}.
  For this purpose we will lower bound the weight of the contradictory clauses at time $i-1$ that are not alive at time $i$
  and upper bound the weight of the clauses that become contradictory at time $i$.
 
 Note that a clause that is contradictory at time $i-1$ is no longer contradictory at time $i$ when either it becomes satisfied
 or it contains literals $x_j$, $j > i$. Therefore a lower bound for the weight of contradictory clauses alive at time $i-1$ and
- not alive at time $i$ by $W_i \mathsf{1}_{x_i^* = 0} + \overline{W_i} \mathsf{1}_{x_i^* = 1}$.
+ not alive at time $i$ by $W_i \mathbbm{1}_{x_i^* = 0} + \overline{W_i} \mathbbm{1}_{x_i^* = 1}$, where $\mathbbm{1}_A$ is the indicator variable for event $A$ being true.
 
 Similarly, the only clauses that can become contradictory at time $i$ are those that are still alive at time $i-1$ and become unsatisfied
  by the asigning $x_i$ to contradict $x_i^*$. Therefore, we can upper bound the weight of clauses that become contradictory by
- $F_i \mathsf{1}_{x_i^* = 1} (1-p) + \overline{F_i} \mathsf{1}_{x_i^* = 0}p$.
+ $F_i \mathbbm{1}_{x_i^* = 1} (1-p) + \overline{F_i} \mathbbm{1}_{x_i^* = 0}p$.
 
 Then we get an upper bound on the change in potential
 
 \begin{equation}
 \label{eq:3}
-\phi(i) - \phi(i-1) \leq 2(-W_i + \overline{F_i} p) \mathsf{1}_{x_i^* = 0} + 2(-\overline{W_i} + F_i(1-p))\mathsf{1}_{x_i^* = 1}
+\phi(i) - \phi(i-1) \leq 2(-W_i + \overline{F_i} p) \mathbbm{1}_{x_i^* = 0} + 2(-\overline{W_i} + F_i(1-p))\mathbbm{1}_{x_i^* = 1}
 \end{equation}
 
 On the other hand
@@ -319,8 +325,8 @@ Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then
 
 \begin{equation*}
 \begin{aligned}
-(\ref{eq:3}) & = -2W_i \mathsf{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathsf{1}_{x_i^* = 1} \\ 
-& \leq  -2W_i \mathsf{1}_{x_i^* = 0} - 2W_i \mathsf{1}_{x_i^* = 0} = -2W_i.
+(\ref{eq:3}) & = -2W_i \mathbbm{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathbbm{1}_{x_i^* = 1} \\ 
+& \leq  -2W_i \mathbbm{1}_{x_i^* = 0} - 2W_i \mathbbm{1}_{x_i^* = 0} = -2W_i.
 \end{aligned}
 \end{equation*} 
 
