@@ -50,8 +50,9 @@
 
 \maketitle
 	% tells latex to follow your header (e.g., title, author) commands.
-
-INSERT ABSTRACT?
+\begin{abstract}
+A number of randomized $\frac{3}{4}$-approximation algorithms for MAX SAT have been developed in recent years. These algorithms sequentially randomly assign values of true or false to each variable based on currently unsatisfied clauses. The first such algorithm, developed by Poloczek and Schnitger \cite{Poloczek:2011:RVJ:2133036.2133087} worked by carefully choosing the probability of assignment for each variable. Van Zuylen's algorithm \cite{vanZuylen:2011:SAM:2238496.2238512} uses a potential function to greatly simply calculations. We show the relationship between these algorithms, how they developed from one another, and discuss the limits of their approach.
+\end{abstract}
 
 \section{Introduction}
 
@@ -173,7 +174,7 @@ Johnson's Algorithm processes the variables in an arbitrary order, and assigns t
 \begin{align*}
 \mu_x = \sum_{C,x\in C}f(C), \,\,\,\, \mu_{\bar{x}} =\sum_{C,\bar{x}\in C}f(C)
 \end{align*}
-Johnson's Algorithm greedily assigns $x=1$ if and only if $\mu_x \ge \mu_{\bar{x}}$.
+Johnson's Algorithm greedily assigns $x=1$ if and only if $\mu_x \ge \mu_{\bar{x}}$. It is straightforward to show that Johnson's algorithm provides a $\frac{2}{3}$ approximation ratio. It can be shown also that Johnson's algorithm can provide a $\frac{2}{3} + c, c>0$ approximation ratio.
 
 \subsection*{The Canonical Randomization}
 Poloczek and Schnitger consider the \emph{Canonical Randomization} (CR) of Johnson's Algorithm. Instead of deterministically assigning a value to the variable $x$, we assign it a value of 1 with probability proportional to the support of $x$ relative to that of $\bar{x}$. So
