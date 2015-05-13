@@ -155,7 +155,11 @@ will achieve its guarantees. Let $\phi(i)$ be the value of the potential functio
 If we have such a potential function, then $\mathbb{E}[\textrm{SAT}(n)- 3\left(W-\textrm{SAT}(n)\right)] \geq \phi(n) - \phi(0) \geq -3(W-\textrm{OPT})$.
 This directly implies $\mathbb{E}[\textrm{SAT}(n)] \geq \frac{3}{4} \textrm{OPT}$.
 
-We utilize the rest of this section to introduce some notation that will be useful for sections 3 and 4.
+We utilize the rest of this section to introduce some notation that will be useful for sections 3 and 4. Let $x_i^*$ be the optimal assignment of $x_i$ and 
+$x_i^{a}$ be the algorithm's assignment. We say a clause is alive
+at time $i$ if it contains some literal $x_j$ with $j > i$ and it is not yet satisfied by $x_1^a,...,x_i^a$.
+We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1^a,...,x_i^a,x_{i+1}^*,...,x_n^*$.
+
 
 
 \section{Poloczek and Schtinger's Approach}\label{S:PS}
@@ -266,11 +270,7 @@ Thus this value of $\varepsilon$ yields exactly zero for the expression we want 
 
 \section{van Zuyeln's Simplified Algorithm}\label{S:vZ}
 
-Let $x_i^*$ be the optimal assignment of $x_i$ and $x_i^{a}$
-be the algorithm's assignment. We say a clause is alive
-at time $i$ if it contains some literal $x_j$ with $j > i$ and it is not yet satisfied by $x_1^a,...,x_i^a$.
-We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1^a,...,x_i^a,x_{i+1}^*,...,x_n^*$.
-
+In this section we present van Zuyeln's simplified analysis of Poloczek and Schnitger's algorithm. 
 
 \begin{lemma}
 Consider the algorithm that sequentially assigns variables $x_1,...,x_n$. Given the assignment of $x_1,...,x_{i-1}$,
@@ -291,8 +291,8 @@ Then the expected weight of the clauses satisfied by the algorithm is at least $
 \end{lemma}
 
 \begin{proof}
-We will present a potential function $\phi$ such that it meets the criterion presented in section \ref{S:idea}. Our potential function will always
- be at least twice the weight of the clauses that are alive and contradictory at time $i$. Note that at time $0$,
+We will present a potential function $\phi$ such that it meets the criterion presented in section \ref{S:idea}. We claim that the potential function 
+$\phi(i) = 2(F_i - F_{i-1})$ works. Note that at time $0$,
  $\phi(0) = 2(W-\textrm{OPT})$. It is clear that the first two conditions will be met, so we will focus on showing equation \ref{eq:2}.
  For this purpose we will lower bound the weight of the contradictory clauses at time $i-1$ that are not alive at time $i$
  and upper bound the weight of the clauses that become contradictory at time $i$.
