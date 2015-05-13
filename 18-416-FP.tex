@@ -215,6 +215,8 @@ For any variable $x_i$, we define the random variable $\mathsf{slack}$ to be the
 \begin{equation}
 \mathsf{slack} = |(\mathsf{fanout} + 2w_{\bar{x_i}}) -(\mathsf{fanin} + 2w_{x_i})|
 \end{equation}
+The main idea of the algorithm is that the magnitude of $\varepsilon$, which is the adjustment to the probabilities, will depend on the $\mathsf{slack}$. Intuitively, if $\mathsf{slack} = 0$ exactly, then we expect $\varepsilon = 0$, because there is no reason to change the probability of assigning either zero or 1. Similarly, suppose $\mathsf{slack}$ is very large, and there is zero support for $x_i = 0$. Then, again we expect $\varepsilon = 0$, because there is no need to change $q_0 = 0$. We only want $\varepsilon$ to be sizable for medium sized slack. Thus, it is reasonable to guess that $\varepsilon$ is negatively quadratic in we expect $\mathsf{slack}$. We will formally verify this intuition.
+
 Let $x_i$ be the $i^{th}$ variable fixed. Following our notation in the introduction, let SAT($i$), UNSAT($i$) be random variables that denote the weight of all clauses that are satisfied, and unsatisfiable once we fix $x_i$, respectively. It follows that
 \begin{eqnarray}
 \mathbb{E}[\textrm{sat}(i)] &=& p_0(\mathsf{fanout} + 2w_{\bar{x_i}}) + p_1(\mathsf{fanin} + 2w_{x_i})\\
@@ -260,7 +262,7 @@ Setting the this expression equal to zero and solving for $\varepsilon$ yields
 \begin{equation}
 \varepsilon = \varepsilon_1 \equiv \frac{-\frac{\mathsf{slack}^2}{\Delta} + \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}})}{2\mathsf{slack}+ \mathsf{fanout} + \mathsf{fanin}}
 \end{equation}
-Thus this value of $\varepsilon$ yields exactly zero for the expression we want to be nonnegative. It's easy to check this also works for the case when $x_i=0$ is an optimal assignment. So, for every variable, we calculate $q_1, q_0$, calculate $\varepsilon_1$, and use it to get $p_1, p_0$. Then we assign $x_i=1$ with probability $p_1$. As we've just shown, this yields $\mathbb{E}[SAT] \ge \frac{3}{4}\textrm{OPT}$.
+Thus this value of $\varepsilon$ yields exactly zero for the expression we want to be nonnegative. It's easy to check this also works for the case when $x_i=0$ is an optimal assignment. So, for every variable, we calculate $q_1, q_0$, calculate $\varepsilon_1$, and use it to get $p_1, p_0$. Then we assign $x_i=1$ with probability $p_1$. As we've just shown, this yields $\mathbb{E}[SAT] \ge \frac{3}{4}\textrm{OPT}$. However, this approach uses a lot of algebra, much of which can be simplified by introducing a potential function, as we do in the next section.
 
 \section{van Zuyeln's Simplified Algorithm}\label{S:vZ}
 
