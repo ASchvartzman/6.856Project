@@ -294,7 +294,7 @@ Then the expected weight of the clauses satisfied by the algorithm is at least $
 
 \begin{proof}
 We will present a potential function $\phi$ such that it meets the criterion presented in section \ref{S:idea}. We claim that the potential function 
-$\phi(i) = 2(F_i - F_{i-1})$ works. Note that at time $0$,
+$\phi(i) = 2(F_i)$ works. This potential function is implicitly present as the $2(F_i - F_{i-1})$ term in Poloczek and Schnitger's equation \ref{C:1}. Note that at time $0$,
  $\phi(0) = 2(W-\textrm{OPT})$. It is clear that the first two conditions will be met, so we will focus on showing equation \ref{eq:2}.
  For this purpose we will lower bound the weight of the contradictory clauses at time $i-1$ that are not alive at time $i$
  and upper bound the weight of the clauses that become contradictory at time $i$.
@@ -348,6 +348,8 @@ that $F_i + \overline{F_i} < 0$, a contradiction.
 
 We now proceed with the more general case. The analysis is similar to the previous cases and will be left as an exercise
 for the reader to save space and prevent further cluttering.
+
+%Note that van Zuylen's algorithm has a significantly simplified form. This is due to the introduction of the potential function. In the Slack algorithm, equation \ref{C:1} needed to be satisfied at every time $i$. The potential function lets us ammortize the cost somehow (not sure how?)
 \end{proof}
 
 
