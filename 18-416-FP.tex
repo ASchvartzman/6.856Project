@@ -179,7 +179,7 @@ Johnson's Algorithm greedily assigns $x_i =1$ if and only if $\mu_{x_1} \ge \mu_
 
 \subsection*{The Canonical Randomization}
 Poloczek and Schnitger consider the \emph{Canonical Randomization} (CR) of Johnson's Algorithm. Instead of deterministically assigning a value to the variable $x_i$, we assign it a value of 1 with probability proportional to the support of $x_i$ relative to that of $\bar{x_i}$. So
-\[\Pr[\mathrm{assign } x_i=1] = \frac{\mu_{x_i}}{\mu_{x_i} + \mu_{\bar{x_i}}},\] and $x_i$ equals zero with the remaining probability. They prove the limits of this approach. We state their result without proof.
+\[\Pr[\mathrm{assign }\, x_i=1] = \frac{\mu_{x_i}}{\mu_{x_i} + \mu_{\bar{x_i}}},\] and $x_i$ equals zero with the remaining probability. They prove the limits of this approach. We state their result without proof.
 
 \begin{lemma}
 \label{L:1}
@@ -197,6 +197,8 @@ If we call the first sum $\mathsf{fanin}$, and label the second sum $w_{x_i}$ an
 \lambda_{x_i} \equiv \textrm{Support for } x_i = \mathsf{fanin} + 2w_{x_i}\\
 \lambda_{\bar{x_i}} \equiv \textrm{Support for } \bar{x_i} = \mathsf{fanout} + 2w_{\bar{x_i}}
 \end{eqnarray*}
+
+Where $\mathsf{fanout}$ and $w_{\bar{x_i}}$ are respectively: \[[\textrm{sum of weights of clauses with }\bar{x}_i\textrm{ with }\ge 2\textrm{ variables}] ,\,\,\, [\textrm{sum of weights of clause containing just }x_i].\]
 Finally, we define $\Delta$ to be the sum of the supports, so $\Delta = \lambda_{x_i} + \lambda_{\bar{x_i}} = \mathsf{fanin} + 2w_{x_i} + \mathsf{fanout} + 2w_{\bar{x_i}}$. If we do a canonical randomization  using the new weight functions, we see that
 \begin{eqnarray*}
 q_0 &:=& \Pr[x_i=0] = \frac{\mathsf{fanout} + 2w_{\bar{x_i}}}{\Delta}\\
@@ -226,7 +228,7 @@ Now Poloczek and Schnitger prove the following Lemma:
 \begin{lemma} \label{L:2}
 $\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)] = \mathbb{E}[\textrm{wounded} + \mathsf{slack}] - (w_{x_i} + w_{\bar{x_i}})$
 \end{lemma}
-Now consider some optimal assignment, $\pi$. Let us define $c(x_i)$ to be the weight of alive clauses that are not satisfied by $\pi$ before assigning a value to $x_i$, and $c'(x_i)$ be that same quantity after we assign a value to $x_i$. By linearity of expectations, we can add the quantity $2(c-c')$ to both sides of the equation of lemma \ref{L:2}, yielding:
+Let us consider some optimal assignment, $\pi$. Let us define $c(x_i)$ to be the weight of alive clauses that are not satisfied by $\pi$ before assigning a value to $x_i$, and $c'(x_i)$ be that same quantity after we assign a value to $x_i$. By linearity of expectations, we can add the quantity $2(c-c')$ to both sides of the equation of lemma \ref{L:2}, yielding:
 \begin{equation}
 \mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] = \mathbb{E}[\textrm{wounded} + \mathsf{slack} + 2(c-c')] - (w_{x_i} + w_{\bar{x_i}})
 \end{equation}
@@ -252,7 +254,7 @@ We want to express this constraint in terms of slack. So we note that from our d
 \\&=& \Delta[(q_1-q_0)^2 + 2\varepsilon(q_1-q_0)]
 \\&=& \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack}
 \end{eqnarray*}
-Plugging this into equation \ref{C:1}, and applying \ref{L:3}, we get that if $x_i =1$ is the optimal assignment,
+Plugging this into equation \ref{C:1}, and applying lemma \ref{L:3}, we get that if $x_i =1$ is the optimal assignment,
 \[\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] \ge \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack} - \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout}).\]
 Setting the this expression equal to zero and solving for $\varepsilon$ yields
 \begin{equation}
