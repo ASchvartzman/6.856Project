@@ -75,8 +75,8 @@ approximation ratio of the derandomized algorithm could be improved to $2/3$ \ci
 Later, Yanakakis \cite{Yannakakis1994475} and separately Goemans and Williamson \cite{Goemans94new3/4-approximation}
 gave algorithms which achieved $3/4$-approximation ratios. In fact, we studied one of these in class.
 These algorithms relied heavily on linear programming relaxations. The best known approximation algorithm due to Avidor, Berkovitch
-and Zwick achieves an approximation ratio of 0.797. The algorithm is a hybrid which runs multiple MAX SAT approximation algorithms
-(including LP based ones) and returns the best. [cite] They also present an algorithm which is conjectured to have a performance of 0.843. 
+and Zwick achieves an approximation ratio of 0.7968. The algorithm is a hybrid which runs multiple MAX SAT approximation algorithms
+(including LP based ones) and returns the best \cite{Avidor:2005:IAA:2105211.2105214}. They also present an algorithm which is conjectured to have a performance of 0.843. 
 
 In 1999, Williamson posed the question
 of whether or not the same approximation ratio could be achieved without using Linear Programming. In 2011,
@@ -152,18 +152,15 @@ will achieve its guarantees. Let $\phi(i)$ be the value of the potential functio
 \end{equation}
 \end{itemize}
 
-If we have such a potential function, then $\mathbb{E}[\textrm{SAT}(n)- 3\left(W-\textrm{SAT}(n)\right)] \geq \phi(n) - \phi(0) \geq 3(W-\textrm{OPT})$.
-This directly implies $\mathbb{E}[\textrm{SAT}(n)] \geq \frac{3}{4} W \geq \frac{3}{4} \textrm{OPT}$.
+If we have such a potential function, then $\mathbb{E}[\textrm{SAT}(n)- 3\left(W-\textrm{SAT}(n)\right)] \geq \phi(n) - \phi(0) \geq -3(W-\textrm{OPT})$.
+This directly implies $\mathbb{E}[\textrm{SAT}(n)] \geq \frac{3}{4} \textrm{OPT}$.
 
 We utilize the rest of this section to introduce some notation that will be useful for sections 3 and 4.
-Let $x_i^*$ be the optimal assignment of $x_i$ and $x_i^{a}$ be the algorithm's assignment. We say a clause is alive
-at time $i$ if it contains some literal $x_j$ with $j > i$ and it is not yet satisfied by $x_1^a,...,x_i^a$.
-We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1^a,...,x_i^a,x_{i+1}^*,...,x_n^*$.
 
 
-\section{Poloczek and Schtinger's approach}\label{S:PS}
+\section{Poloczek and Schtinger's Approach}\label{S:PS}
 
-Here we present Poloczek and Shcnitger's algorithm. In this section,
+In this section,
 we will remind the read about Johnson's Deterministic Algorithm. Motivated by the power of randomness, Poloczek and Schnitger 
 turn it into a randomized algorithm. Their first approach, the Canonical Randomization, can be shown to achieve an approximation ratio of at most $17/23$. 
 They overcome this barrier by introducing slight modifications to the probabilities and prove that there exist perturbations that yield a $3/4$ approximation. 
@@ -218,54 +215,58 @@ For any variable $x_i$, we define the random variable $\mathsf{slack}$ to be the
 \end{equation}
 Let $x_i$ be the $i^{th}$ variable fixed. Following our notation in the introduction, let SAT($i$), UNSAT($i$) be random variables that denote the weight of all clauses that are satisfied, and unsatisfiable once we fix $x_i$, respectively. It follows that
 \begin{eqnarray}
-E[\textrm{sat}(i)] &=& p_0(\mathsf{fanout} + 2w_{\bar{x_i}}) + p_1(\mathsf{fanin} + 2w_{x_i})\\
-E[\textrm{unsat}(i)] &=& p_0w_{x_i} + p_1w_{\bar{x_i}}
+\mathbb{E}[\textrm{sat}(i)] &=& p_0(\mathsf{fanout} + 2w_{\bar{x_i}}) + p_1(\mathsf{fanin} + 2w_{x_i})\\
+\mathbb{E}[\textrm{unsat}(i)] &=& p_0w_{x_i} + p_1w_{\bar{x_i}}
 \end{eqnarray}
 Now, we call a clause, $C$ containing $x_i$ or its negation \textit{alive} iff after assigning a value to $x_i$, $C$ still has not been satisfied or falsified. Further, we define the random variable ``wounded" to be the sum of the weights of all alive clauses. Therefore
 \begin{equation}
-E[\textrm{wounded}] = p_0 \cdot \mathsf{fanin} + p_1 \cdot \mathsf{fanout}
+\mathbb{E}[\textrm{wounded}] = p_0 \cdot \mathsf{fanin} + p_1 \cdot \mathsf{fanout}
 \end{equation}
 Now Poloczek and Schnitger prove the following Lemma:
 \begin{lemma} \label{L:2}
-$E[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)] = E[\textrm{wounded} + \mathsf{slack}] - (w_{x_i} + w_{\bar{x_i}})$
+$\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)] = \mathbb{E}[\textrm{wounded} + \mathsf{slack}] - (w_{x_i} + w_{\bar{x_i}})$
 \end{lemma}
 Now consider some optimal assignment, $\pi$. Let us define $c(x_i)$ to be the weight of alive clauses that are not satisfied by $\pi$ before assigning a value to $x_i$, and $c'(x_i)$ be that same quantity after we assign a value to $x_i$. By linearity of expectations, we can add the quantity $2(c-c')$ to both sides of the equation of lemma \ref{L:2}, yielding:
 \begin{equation}
-E[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] = E[\textrm{wounded} + \mathsf{slack} + 2(c-c')] - (w_{x_i} + w_{\bar{x_i}})
+\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] = \mathbb{E}[\textrm{wounded} + \mathsf{slack} + 2(c-c')] - (w_{x_i} + w_{\bar{x_i}})
 \end{equation}
 If we can manage to find $p_0,p_1$ so that the right side of the equation is always positive, then we have
 \begin{equation}
-E[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] \ge 0 \label{C:1}
+\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] \ge 0 \label{C:1}
 \end{equation}
 So the algorithm will have a $\frac{3}{4}$ approximation ratio if equation \ref{C:1} is satisfied. It is worth noting at this 
 point that the term $\mathbb{E}(c'-c)$ is equal to
 $\mathbb{E}(\phi(i) - \phi(i-1))$ mentioned in the previous section. To achieve the approximation ratio, the next lemma is useful:
 \begin{lemma} \label{L:3}
 Assume our assignment probabilities for $x_i$ are $\Pr[x_i = 1] = p_1, \Pr[x_i =0] = p_0$. If the optimal assignment is $x_i =1$, then:
-\[E[\textrm{wounded} - 2(c'-c)] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
+\[\mathbb{E}[\textrm{wounded} - 2(c'-c)] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
 If the optimal assignment is  $x_i=0$, then:
-\[E[\textrm{wounded} - 2(c'-c)] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) - \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
+\[\mathbb{E}[\textrm{wounded} - 2(c'-c)] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) - \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
 \end{lemma}
 The proof of this lemma involves quite a bit of algebra and is therefore omitted here. The consequence of this lemma, though, is that we can use it to find a value for $\varepsilon$ so that equation \ref{C:1} is always satisfied.
 
 We want to express this constraint in terms of slack. So we note that from our definition of slack:
 \begin{eqnarray*}
-E[\mathsf{slack}] &=& (p_1-p_0)\cdot ((\mathsf{fanout} + 2w_{\bar{x_i}}) -(\mathsf{fanin} + 2w_{x_i}))
+\mathbb{E}[\mathsf{slack}] &=& (p_1-p_0)\cdot ((\mathsf{fanout} + 2w_{\bar{x_i}}) -(\mathsf{fanin} + 2w_{x_i}))
 \\&=& (q_1-q_0+2\epsilon)(q_1-q_0)\cdot\Delta
 \\&=& \Delta[(q_1-q_0)^2 + 2\varepsilon(q_1-q_0)]
 \\&=& \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack}
 \end{eqnarray*}
 Plugging this into equation \ref{C:1}, and applying \ref{L:3}, we get that if $x_i =1$ is the optimal assignment,
-\[E[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] \ge \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack} - \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout}).\]
+\[\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] \ge \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack} - \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout}).\]
 Setting the this expression equal to zero and solving for $\varepsilon$ yields
 \begin{equation}
 \varepsilon = \varepsilon_1 \equiv \frac{-\frac{\mathsf{slack}^2}{\Delta} + \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}})}{2\mathsf{slack}+ \mathsf{fanout} + \mathsf{fanin}}
 \end{equation}
-Thus this value of $\varepsilon$ yields exactly zero for the expression we want to be nonnegative. It's easy to check this also works for the case when $x_i=0$ is an optimal assignment. So, for every variable, we calculate $q_1, q_0$, calculate $\varepsilon_1$, and use it to get $p_1, p_0$. Then we assign $x_i=1$ with probability $p_1$. As we've just shown, this yields $E[SAT] \ge \frac{3}{4}\textrm{OPT}$.
+Thus this value of $\varepsilon$ yields exactly zero for the expression we want to be nonnegative. It's easy to check this also works for the case when $x_i=0$ is an optimal assignment. So, for every variable, we calculate $q_1, q_0$, calculate $\varepsilon_1$, and use it to get $p_1, p_0$. Then we assign $x_i=1$ with probability $p_1$. As we've just shown, this yields $\mathbb{E}[SAT] \ge \frac{3}{4}\textrm{OPT}$.
 
 \section{van Zuyeln's Simplified Algorithm}\label{S:vZ}
 
-In this section we present van Zuylen's combinatorial algorithm.
+Let $x_i^*$ be the optimal assignment of $x_i$ and $x_i^{a}$
+be the algorithm's assignment. We say a clause is alive
+at time $i$ if it contains some literal $x_j$ with $j > i$ and it is not yet satisfied by $x_1^a,...,x_i^a$.
+We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1^a,...,x_i^a,x_{i+1}^*,...,x_n^*$.
+
 
 \begin{lemma}
 Consider the algorithm that sequentially assigns variables $x_1,...,x_n$. Given the assignment of $x_1,...,x_{i-1}$,
