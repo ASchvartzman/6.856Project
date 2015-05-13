@@ -50,7 +50,7 @@
 \maketitle
 	% tells latex to follow your header (e.g., title, author) commands.
 \begin{abstract}
-A number of randomized $\frac{3}{4}$-approximation algorithms for MAX SAT have been developed in recent years. These algorithms sequentially randomly assign values of true or false to each variable based on currently unsatisfied clauses. The first such algorithm, developed by Poloczek and Schnitger \cite{Poloczek:2011:RVJ:2133036.2133087} worked by carefully choosing the probability of assignment for each variable. Van Zuylen's algorithm \cite{vanZuylen:2011:SAM:2238496.2238512} uses a potential function to greatly simply calculations. We show the relationship between these algorithms, how they developed from one another, and discuss the limits of their approach.
+A number of randomized $\frac{3}{4}$-approximation algorithms for MAX SAT have been developed in recent years. These algorithms sequentially randomly assign values of true or false to each variable based on currently unsatisfied clauses. The first such algorithm, developed by Poloczek and Schnitger \cite{Poloczek:2011:RVJ:2133036.2133087} works by carefully choosing the probability of assignment for each variable. Van Zuylen's algorithm \cite{vanZuylen:2011:SAM:2238496.2238512} uses a potential function to greatly simply calculations. We show the relationship between these algorithms, how they developed from one another, and discuss the limits of their approach.
 \end{abstract}
 
 \section{Introduction}
@@ -220,8 +220,10 @@ For any variable $x_i$, we define the random variable $\mathsf{slack}$ to be the
 \mathsf{slack} = |(\mathsf{fanout} + 2w_{\bar{x_i}}) -(\mathsf{fanin} + 2w_{x_i})|
 \end{equation}
 The main idea of the algorithm is that the magnitude of $\varepsilon$, which is the adjustment to the probabilities, will depend on the $\mathsf{slack}$. Intuitively, if $\mathsf{slack} = 0$ exactly, then we expect $\varepsilon = 0$, because there is no reason to change the probability of assigning either zero or 1. Similarly, suppose $\mathsf{slack}$ is very large, and there is zero support for $x_i = 0$. Then, again we expect $\varepsilon = 0$, because there is no need to change $q_0 = 0$. We only want $\varepsilon$ to be sizable for medium sized slack. Thus, it is reasonable to guess that $\varepsilon$ is negatively quadratic in we expect $\mathsf{slack}$. We will formally verify this intuition.
-
-Let $x_i$ be the $i^{th}$ variable fixed. Following our notation in the introduction, let SAT($i$), UNSAT($i$) be random variables that denote the weight of all clauses that are satisfied, and unsatisfiable once we fix $x_i$, respectively. It follows that
+\begin{theorem}
+Choosing $$\varepsilon = \varepsilon_1 \equiv \frac{-\frac{\mathsf{slack}^2}{\Delta} + \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}})}{2\mathsf{slack}+ \mathsf{fanout} + \mathsf{fanin}}$$ yields probabilities that give a $\frac{3}{4}$ approximation.
+\end{theorem}
+We derive this result algebraically. Let $x_i$ be the $i^{th}$ variable fixed. Following our notation in the introduction, let SAT($i$), UNSAT($i$) be random variables that denote the weight of all clauses that are satisfied, and unsatisfiable once we fix $x_i$, respectively. Recall sat($i$) = SAT($i$) - SAT($i-1$), unsat($i$) = UNSAT($i$) - UNSAT($i-1$). It follows that
 \begin{eqnarray}
 \mathbb{E}[\textrm{sat}(i)] &=& p_0(\mathsf{fanout} + 2w_{\bar{x_i}}) + p_1(\mathsf{fanin} + 2w_{x_i})\\
 \mathbb{E}[\textrm{unsat}(i)] &=& p_0w_{x_i} + p_1w_{\bar{x_i}}
@@ -234,7 +236,7 @@ Now Poloczek and Schnitger prove the following Lemma:
 \begin{lemma} \label{L:2}
 $\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)] = \mathbb{E}[\textrm{wounded} + \mathsf{slack}] - (w_{x_i} + w_{\bar{x_i}})$
 \end{lemma}
-Let us consider some optimal assignment, $\pi$, which has assignments $x_1^*, x_2^* \ldots x_n^*$. Let us define $F_i$ to be the weight of the clauses which we called \emph{contradictory}. That is, the weight of alive clauses that are not satisfied by $\pi$ after assigning a value to $x_i$. Similarly, $F_{i-1}$ is the weight of all contradictory clauses  after we assign a value to $x_i$. By linearity of expectations, we can add the quantity $-2(F_{i}-F_{i-1})$ to both sides of the equation of lemma \ref{L:2}, yielding:
+Let us consider some optimal assignment, $\pi$, which has assignments $x_1^*, x_2^* \ldots x_n^*$. Let us define $F_i$ to be the weight of the clauses which we called \emph{contradictory}. That is, the weight of alive clauses that are not satisfied by $\pi$ after assigning a value to $x_i$. Similarly, $F_{i-1}$ is the weight of all contradictory clauses  after we assign a value to $x_{i-1}$. By linearity of expectations, we can add the quantity $-2(F_{i}-F_{i-1})$ to both sides of the equation of lemma \ref{L:2}, yielding:
 \begin{equation}
 \mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i) - 2(F_{i}-F_{i-1})] = \mathbb{E}[\textrm{wounded} + \mathsf{slack} - 2(F_{i}-F_{i-1})] - (w_{x_i} + w_{\bar{x_i}})
 \end{equation}
