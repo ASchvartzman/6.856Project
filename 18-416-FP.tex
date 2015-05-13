@@ -228,22 +228,22 @@ Now Poloczek and Schnitger prove the following Lemma:
 \begin{lemma} \label{L:2}
 $\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)] = \mathbb{E}[\textrm{wounded} + \mathsf{slack}] - (w_{x_i} + w_{\bar{x_i}})$
 \end{lemma}
-Let us consider some optimal assignment, $\pi$. Let us define $c(x_i)$ to be the weight of alive clauses that are not satisfied by $\pi$ before assigning a value to $x_i$, and $c'(x_i)$ be that same quantity after we assign a value to $x_i$. By linearity of expectations, we can add the quantity $2(c-c')$ to both sides of the equation of lemma \ref{L:2}, yielding:
+Let us consider some optimal assignment, $\pi$, which has assignments $x_1^*, x_2^* \ldots x_n^*$. Let us define $F_i$ to be the weight of the clauses which we called \emph{contradictory}. That is, the weight of alive clauses that are not satisfied by $\pi$ after assigning a value to $x_i$. Similarly, $F_{i-1}$ is the weight of all contradictory clauses  after we assign a value to $x_i$. By linearity of expectations, we can add the quantity $-2(F_{i}-F_{i-1})$ to both sides of the equation of lemma \ref{L:2}, yielding:
 \begin{equation}
-\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] = \mathbb{E}[\textrm{wounded} + \mathsf{slack} + 2(c-c')] - (w_{x_i} + w_{\bar{x_i}})
+\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i) - 2(F_{i}-F_{i-1})] = \mathbb{E}[\textrm{wounded} + \mathsf{slack} - 2(F_{i}-F_{i-1})] - (w_{x_i} + w_{\bar{x_i}})
 \end{equation}
 If we can manage to find $p_0,p_1$ so that the right side of the equation is always positive, then we have
 \begin{equation}
-\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] \ge 0 \label{C:1}
+\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(F_{i-1}-F_i)] \ge 0 \label{C:1}
 \end{equation}
 So the algorithm will have a $\frac{3}{4}$ approximation ratio if equation \ref{C:1} is satisfied. It is worth noting at this 
-point that the term $\mathbb{E}(c'-c)$ is equal to
+point that the term $\mathbb{E}(F_{i}-F_{i-1})$ is equal to
 $\mathbb{E}(\phi(i) - \phi(i-1))$ mentioned in the previous section. To achieve the approximation ratio, the next lemma is useful:
 \begin{lemma} \label{L:3}
 Assume our assignment probabilities for $x_i$ are $\Pr[x_i = 1] = p_1, \Pr[x_i =0] = p_0$. If the optimal assignment is $x_i =1$, then:
-\[\mathbb{E}[\textrm{wounded} - 2(c'-c)] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
+\[\mathbb{E}[\textrm{wounded} - 2(F_{i}-F_{i-1})] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
 If the optimal assignment is  $x_i=0$, then:
-\[\mathbb{E}[\textrm{wounded} - 2(c'-c)] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) - \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
+\[\mathbb{E}[\textrm{wounded} - 2(F_{i}-F_{i-1})] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) - \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
 \end{lemma}
 The proof of this lemma involves quite a bit of algebra and is therefore omitted here. The consequence of this lemma, though, is that we can use it to find a value for $\varepsilon$ so that equation \ref{C:1} is always satisfied.
 
@@ -255,7 +255,7 @@ We want to express this constraint in terms of slack. So we note that from our d
 \\&=& \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack}
 \end{eqnarray*}
 Plugging this into equation \ref{C:1}, and applying lemma \ref{L:3}, we get that if $x_i =1$ is the optimal assignment,
-\[\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(c-c')] \ge \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack} - \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout}).\]
+\[\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(F_{i}-F_{i-1})] \ge \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack} - \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout}).\]
 Setting the this expression equal to zero and solving for $\varepsilon$ yields
 \begin{equation}
 \varepsilon = \varepsilon_1 \equiv \frac{-\frac{\mathsf{slack}^2}{\Delta} + \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}})}{2\mathsf{slack}+ \mathsf{fanout} + \mathsf{fanin}}
