@@ -131,7 +131,7 @@ Adding these inequalities over all $i$ we get that
 \end{aligned}
 \end{equation*}
 
-From this we get that our algorithms' approximation ratio, $\textrm{SAT}(n)$, is at least $\frac{3}{4}$ of the maximum possible weight $W$.
+From this we get that our algorithm's approximation ratio, $\textrm{SAT}(n)$, is at least $\frac{3}{4}$ of the maximum possible weight $W$.
 
 There might not always exist an assignment for $i$ such that the equation \ref{eq:1} above holds. However, we only need it to hold on aggregate.
 This is why the notion of a potential function $\phi$ is introduced. Throughout the algorithm, we will use the potential function to help us pay
@@ -174,7 +174,7 @@ They overcome this barrier by introducing slight modifications to the probabilit
 Consider, as mentioned in the introduction, the scaled clause weight.
 For a clause $C_j$, with weight $w_j$, we have the modified weight:  $f(C_j) = w_j 2^{-|C_j|}$.
 
-Johnson's algorithm processes the variables in an arbitrary order, and assigns them a value of 0 or 1 as follows. Let $x$ be the variable being assigned a value. We define the \emph{support} of $x_i$, $\mu_{x_i}$ to be the sum of the scaled weights of clauses containing $x_i$. Similarly, $\mu_{\bar{x_i}}$ is the sum of scaled weights of clauses containing $\bar{x_i}$ so
+Johnson's algorithm processes the variables in an arbitrary order, and assigns them a value of 0 or 1 as follows. Let $x$ be the variable being assigned a value. We define the \emph{support} of $x_i$, $\mu_{x_i}$ to be the sum of the scaled weights of clauses containing $x_i$. Similarly, $\mu_{\bar{x_i}}$ is the sum of scaled weights of clauses containing $\bar{x_i}$, so
 
 \begin{align*}
 \mu_{x_i} = \sum_{C,x_i \in C}f(C), \,\,\,\, \mu_{\bar{x_i}} =\sum_{C,\bar{x_i}\in C}f(C)
@@ -188,27 +188,27 @@ Poloczek and Schnitger consider the \emph{Canonical Randomization} (CR) of Johns
 \begin{lemma}
 \label{L:1}
 The approximation ratio of CR algorithm is upper-bounded by
-$$\frac{17}{23} < \frac{3}{4}$$
+$$\frac{17}{23} < \frac{3}{4}.$$
 
 \end{lemma}
 The proof is constructive one. Poloczek and Schnitger construct a family of 2-CNF fomrulas which are fully satisfied by an assignment of all-ones, and show that as the number of variables gets large, the CR approximation approaches the above limit. This proof is quite long and out of this paper's scope.
 
 \subsection*{Alternative Probabilities}
-Due to Lemma \ref{L:1}, Poloczek and Schnitger decide to use an alternative weighting scheme. In this alternative, every clause with a single variable gets its weight doubled, while the remaining weights are unchanged. Therefore, the new support for $x$ which we can label $\lambda_{x_i}$ is:
+Due to Lemma \ref{L:1}, Poloczek and Schnitger decide to use an alternative weighting scheme. In this alternative, every clause with a single variable gets its weight doubled, while the remaining weights are unchanged. Therefore, the new support for $x$ which we can label $\lambda_{x_i}$ is
 \[[\textrm{sum of weights of clauses with }x_i\textrm{ with }\ge 2\textrm{ variables}] + 2[\textrm{sum of weights of clause containing just }x_i].\]
 
 If we call the first sum $\mathsf{fanin}$, and label the second sum $w_{x_i}$ and $\mathsf{fanout}$, $w_{\bar{x_i}}$ their counterparts for $\bar{x_i}$, then
-\begin{eqnarray*}
-\lambda_{x_i} &\equiv& \textrm{Support for } x_i = \mathsf{fanin} + 2w_{x_i}\\
-\lambda_{\bar{x_i}} &\equiv& \textrm{Support for } \bar{x_i} = \mathsf{fanout} + 2w_{\bar{x_i}}
-\end{eqnarray*}
+\begin{align*}
+\lambda_{x_i} &\equiv \textrm{Support for } x_i = \mathsf{fanin} + 2w_{x_i}, \\
+\lambda_{\bar{x_i}} &\equiv \textrm{Support for } \bar{x_i} = \mathsf{fanout} + 2w_{\bar{x_i}}.
+\end{align*}
 
-Where $\mathsf{fanout}$ and $w_{\bar{x_i}}$ are respectively: \[[\textrm{sum of weights of clauses with }\bar{x}_i\textrm{ with }\ge 2\textrm{ variables}] ,\,\,\, [\textrm{sum of weights of clause containing just }x_i].\]
+Where $\mathsf{fanout}$ and $w_{\bar{x_i}}$ are respectively \[[\textrm{sum of weights of clauses with }\bar{x}_i\textrm{ with }\ge 2\textrm{ variables}] ,\,\,\, [\textrm{sum of weights of clause containing just }x_i].\]
 Finally, we define $\Delta$ to be the sum of the supports, so $\Delta = \lambda_{x_i} + \lambda_{\bar{x_i}} = \mathsf{fanin} + 2w_{x_i} + \mathsf{fanout} + 2w_{\bar{x_i}}$. If we do a canonical randomization using the new weight functions, we see that
-\begin{eqnarray*}
-q_0 &:=& \Pr[x_i=0] = \frac{\mathsf{fanout} + 2w_{\bar{x_i}}}{\Delta}\\
-q_1 &:=& \Pr[x_i=1] = \frac{\mathsf{fanin} + 2w_{x_i}}{\Delta}
-\end{eqnarray*}
+\begin{align*}
+q_0 &:= \Pr[x_i=0] = \frac{\mathsf{fanout} + 2w_{\bar{x_i}}}{\Delta}, \\
+q_1 &:= \Pr[x_i=1] = \frac{\mathsf{fanin} + 2w_{x_i}}{\Delta}.
+\end{align*}
 Note that for a $2-\text{CNF}$ formula, these alternative weights are exactly equivalent to the weights used in Johnson's algorithm. Thus, these modified weights still don't guarantee a $\frac{3}{4}$ approximation ratio.
 
 \subsection*{Slack Algorithm}
@@ -218,7 +218,7 @@ Assume w.l.o.g that $q_0 \le q_1$, so $x$ is at least as likely to assigned a va
 
 For any variable $x_i$, we define the random variable $\mathsf{slack}$ to be the magnitude of the difference between the support of $x_i$ and that of $\bar{x_i}$:
 \begin{equation}
-\mathsf{slack} = |(\mathsf{fanout} + 2w_{\bar{x_i}}) -(\mathsf{fanin} + 2w_{x_i})|
+\mathsf{slack} = |(\mathsf{fanout} + 2w_{\bar{x_i}}) -(\mathsf{fanin} + 2w_{x_i})|.
 \end{equation}
 The main idea of the algorithm is that the magnitude of $\varepsilon$, which is the adjustment to the probabilities, will depend on the $\mathsf{slack}$. Intuitively, if $\mathsf{slack} = 0$ exactly, then we expect $\varepsilon = 0$, because there is no reason to change the probability of assigning either zero or 1. Similarly, suppose $\mathsf{slack}$ is very large, and there is zero support for $x_i = 0$. Then, again we expect $\varepsilon = 0$, because there is no need to change $q_0 = 0$. We only want $\varepsilon$ to be sizable for medium sized slack. Thus, it is reasonable to guess that $\varepsilon$ is negatively quadratic in we expect $\mathsf{slack}$. We will formally verify this intuition.
 \begin{theorem}
@@ -249,25 +249,25 @@ So the algorithm will have a $\frac{3}{4}$ approximation ratio if equation \ref{
 point that the term $\mathbb{E}(F_{i}-F_{i-1})$ is equal to
 $\mathbb{E}(\phi(i) - \phi(i-1))$ mentioned in the previous section. To achieve the approximation ratio, the next lemma is useful:
 \begin{lemma} \label{L:3}
-Assume our assignment probabilities for $x_i$ are $\Pr[x_i = 1] = p_1, \Pr[x_i =0] = p_0$. If the optimal assignment is $x_i =1$, then:
-\[\mathbb{E}[\textrm{wounded} - 2(F_{i}-F_{i-1})] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
-If the optimal assignment is  $x_i=0$, then:
-\[\mathbb{E}[\textrm{wounded} - 2(F_{i}-F_{i-1})] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) - \varepsilon(\mathsf{fanin} + \mathsf{fanout})\]
+Assume our assignment probabilities for $x_i$ are $\Pr[x_i = 1] = p_1, \Pr[x_i =0] = p_0$. If the optimal assignment is $x_i =1$, then
+\[\mathbb{E}[\textrm{wounded} - 2(F_{i}-F_{i-1})] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout}).\]
+If the optimal assignment is  $x_i=0$, then
+\[\mathbb{E}[\textrm{wounded} - 2(F_{i}-F_{i-1})] - (w_{x_i} - w_{\bar{x_i}}) \ge \frac{\mathsf{slack}}{\Delta}(w_{x_i} - w_{\bar{x_i}}) - \varepsilon(\mathsf{fanin} + \mathsf{fanout}).\]
 \end{lemma}
 The proof of this lemma involves quite a bit of algebra and is therefore omitted here. The consequence of this lemma, though, is that we can use it to find a value for $\varepsilon$ so that equation \ref{C:1} is always satisfied.
 
 We want to express this constraint in terms of slack. So we note that from our definition of slack:
-\begin{eqnarray*}
-\mathbb{E}[\mathsf{slack}] &=& (p_1-p_0)\cdot ((\mathsf{fanout} + 2w_{\bar{x_i}}) -(\mathsf{fanin} + 2w_{x_i}))
-\\&=& (q_1-q_0+2\epsilon)(q_1-q_0)\cdot\Delta
-\\&=& \Delta[(q_1-q_0)^2 + 2\varepsilon(q_1-q_0)]
-\\&=& \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack}
-\end{eqnarray*}
+\begin{align*}
+\mathbb{E}[\mathsf{slack}] &= (p_1-p_0)\cdot ((\mathsf{fanout} + 2w_{\bar{x_i}}) -(\mathsf{fanin} + 2w_{x_i}))
+\\ &= (q_1-q_0+2\epsilon)(q_1-q_0)\cdot\Delta
+\\ &= \Delta[(q_1-q_0)^2 + 2\varepsilon(q_1-q_0)]
+\\ &= \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack}.
+\end{align*}
 Plugging this into equation \ref{C:1}, and applying lemma \ref{L:3}, we get that if $x_i =1$ is the optimal assignment,
 \[\mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(F_{i}-F_{i-1})] \ge \frac{\mathsf{slack}^2}{\Delta} +2\varepsilon\cdot\mathsf{slack} - \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}}) + \varepsilon(\mathsf{fanin} + \mathsf{fanout}).\]
 Setting the this expression equal to zero and solving for $\varepsilon$ yields
 \begin{equation}
-\varepsilon = \varepsilon_1 \equiv \frac{-\frac{\mathsf{slack}^2}{\Delta} + \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}})}{2\mathsf{slack}+ \mathsf{fanout} + \mathsf{fanin}}
+\varepsilon = \varepsilon_1 \equiv \frac{-\frac{\mathsf{slack}^2}{\Delta} + \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}})}{2\mathsf{slack}+ \mathsf{fanout} + \mathsf{fanin}}.
 \end{equation}
 Thus this value of $\varepsilon$ yields exactly zero for the expression we want to be nonnegative. It's easy to check this also works for the case when $x_i=0$ is an optimal assignment. So, for every variable, we calculate $q_1, q_0$, calculate $\varepsilon_1$, and use it to get $p_1, p_0$. Then we assign $x_i=1$ with probability $p_1$. As we've just shown, this yields $\mathbb{E}[SAT] \ge \frac{3}{4}\textrm{OPT}$. However, this approach uses a lot of algebra, much of which can be simplified by introducing a potential function, as we do in the next section.
 
@@ -309,20 +309,20 @@ Similarly, the only clauses that can become contradictory at time $i$ are those 
  by the asigning $x_i$ to contradict $x_i^*$. Therefore, we can upper bound the weight of clauses that become contradictory by
  $F_i \mathbbm{1}_{x_i^* = 1} (1-p) + \overline{F_i} \mathbbm{1}_{x_i^* = 0}p$.
 
-Then we get an upper bound on the change in potential
+Then we get an upper bound on the change in potential:
 
 \begin{equation}
 \label{eq:3}
-\phi(i) - \phi(i-1) \leq 2(-W_i + \overline{F_i} p) \mathbbm{1}_{x_i^* = 0} + 2(-\overline{W_i} + F_i(1-p))\mathbbm{1}_{x_i^* = 1}
+\phi(i) - \phi(i-1) \leq 2(-W_i + \overline{F_i} p) \mathbbm{1}_{x_i^* = 0} + 2(-\overline{W_i} + F_i(1-p))\mathbbm{1}_{x_i^* = 1}.
 \end{equation}
 
-On the other hand
+On the other hand,
 
 \begin{equation}
 \begin{aligned}
 \label{eq:4}
 & \textrm{SAT}(i) - \textrm{SAT}(i-1) - 3(\textrm{UNSAT}(i) - \textrm{UNSAT}(i-1)) \\
-& = p(W_i + F_i - 3\overline{W_i}) + (1-p)(\overline{W_i} + \overline{F_i} - 3W_i)
+& = p(W_i + F_i - 3\overline{W_i}) + (1-p)(\overline{W_i} + \overline{F_i} - 3W_i).
 \end{aligned}
 \end{equation}
 
@@ -705,7 +705,7 @@ Armed with this lemma, we are finally ready to give the full construction.
     and all quivalences between
     phase II variables of different parities
     that are not in the same consecutive pair
-    are unsatisfied
+    are unsatisfied.
   \end{itemize}
   That the adversary can achieve all of these follows from
   Lemmas~\ref{lemma:phaseI}~and~\ref{lemma:phaseII}.
