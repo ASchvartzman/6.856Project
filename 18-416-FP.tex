@@ -56,7 +56,7 @@ A number of randomized $\frac{3}{4}$-approximation algorithms for MAX SAT have b
 \section{Introduction}
 
 In the Maximum Satisfiability Problem (MAX SAT) we are given a set of boolean variables $x_1, ..., x_n$
-and a formula in conductive normal form whose clauses $C_1,...,C_m$ involving them and 
+and a formula in conductive normal form whose clauses $C_1,...,C_m$ involving them and
 want an assignment of the variables that satisfies the most clauses.
 In class we analyzed the unweighted case, but here we consider non-negative weights $w_i$ for the clauses
 and ask for the weight of the satisfied clauses to be maximized. This problem, which is a generalization of the
@@ -76,7 +76,7 @@ Later, Yanakakis \cite{Yannakakis1994475} and separately Goemans and Williamson 
 gave algorithms which achieved $3/4$-approximation ratios. In fact, we studied one of these in class.
 These algorithms relied heavily on linear programming relaxations. The best known approximation algorithm due to Avidor, Berkovitch
 and Zwick achieves an approximation ratio of 0.7968. The algorithm is a hybrid which runs multiple MAX SAT approximation algorithms
-(including LP based ones) and returns the best \cite{Avidor:2005:IAA:2105211.2105214}. They also present an algorithm which is conjectured to have a performance of 0.843. 
+(including LP based ones) and returns the best \cite{Avidor:2005:IAA:2105211.2105214}. They also present an algorithm which is conjectured to have a performance of 0.843.
 
 In 1999, Williamson posed the question
 of whether or not the same approximation ratio could be achieved without using Linear Programming. In 2011,
@@ -155,7 +155,7 @@ will achieve its guarantees. Let $\phi(i)$ be the value of the potential functio
 If we have such a potential function, then $\mathbb{E}[\textrm{SAT}(n)- 3\left(W-\textrm{SAT}(n)\right)] \geq \phi(n) - \phi(0) \geq -3(W-\textrm{OPT})$.
 This directly implies $\mathbb{E}[\textrm{SAT}(n)] \geq \frac{3}{4} \textrm{OPT}$.
 
-We utilize the rest of this section to introduce some notation that will be useful for sections 3 and 4. Let $x_i^*$ be the optimal assignment of $x_i$ and 
+We utilize the rest of this section to introduce some notation that will be useful for sections 3 and 4. Let $x_i^*$ be the optimal assignment of $x_i$ and
 $x_i^{a}$ be the algorithm's assignment. We say a clause is alive
 at time $i$ if it contains some literal $x_j$ with $j > i$ and it is not yet satisfied by $x_1^a,...,x_i^a$.
 We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1^a,...,x_i^a,x_{i+1}^*,...,x_n^*$.
@@ -165,9 +165,9 @@ We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1
 \section{Poloczek and Schtinger's Approach}\label{S:PS}
 
 In this section,
-we will remind the read about Johnson's Deterministic Algorithm. Motivated by the power of randomness, Poloczek and Schnitger 
-turn it into a randomized algorithm. Their first approach, the Canonical Randomization, can be shown to achieve an approximation ratio of at most $17/23$. 
-They overcome this barrier by introducing slight modifications to the probabilities and prove that there exist perturbations that yield a $3/4$ approximation. 
+we will remind the read about Johnson's Deterministic Algorithm. Motivated by the power of randomness, Poloczek and Schnitger
+turn it into a randomized algorithm. Their first approach, the Canonical Randomization, can be shown to achieve an approximation ratio of at most $17/23$.
+They overcome this barrier by introducing slight modifications to the probabilities and prove that there exist perturbations that yield a $3/4$ approximation.
 
 \subsection*{Johnson's Deterministic Algorithm}
 
@@ -244,7 +244,7 @@ If we can manage to find $p_0,p_1$ so that the right side of the equation is alw
 \begin{equation}
 \mathbb{E}[\textrm{sat}(i) - 3\cdot\textrm{unsat}(i)+ 2(F_{i-1}-F_i)] \ge 0 \label{C:1}
 \end{equation}
-So the algorithm will have a $\frac{3}{4}$ approximation ratio if equation \ref{C:1} is satisfied. It is worth noting at this 
+So the algorithm will have a $\frac{3}{4}$ approximation ratio if equation \ref{C:1} is satisfied. It is worth noting at this
 point that the term $\mathbb{E}(F_{i}-F_{i-1})$ is equal to
 $\mathbb{E}(\phi(i) - \phi(i-1))$ mentioned in the previous section. To achieve the approximation ratio, the next lemma is useful:
 \begin{lemma} \label{L:3}
@@ -272,7 +272,7 @@ Thus this value of $\varepsilon$ yields exactly zero for the expression we want 
 
 \section{van Zuyeln's Simplified Algorithm}\label{S:vZ}
 
-In this section we present van Zuyeln's simplified analysis of Poloczek and Schnitger's algorithm. 
+In this section we present van Zuyeln's simplified analysis of Poloczek and Schnitger's algorithm.
 
 \begin{lemma}
 Consider the algorithm that sequentially assigns variables $x_1,...,x_n$. Given the assignment of $x_1,...,x_{i-1}$,
@@ -293,7 +293,7 @@ Then the expected weight of the clauses satisfied by the algorithm is at least $
 \end{lemma}
 
 \begin{proof}
-We will present a potential function $\phi$ such that it meets the criterion presented in section \ref{S:idea}. We claim that the potential function 
+We will present a potential function $\phi$ such that it meets the criterion presented in section \ref{S:idea}. We claim that the potential function
 $\phi(i) = 2(F_i)$ works. This potential function is implicitly present as the $2(F_i - F_{i-1})$ term in Poloczek and Schnitger's equation \ref{C:1}. Note that at time $0$,
  $\phi(0) = 2(W-\textrm{OPT})$. It is clear that the first two conditions will be met, so we will focus on showing equation \ref{eq:2}.
  For this purpose we will lower bound the weight of the contradictory clauses at time $i-1$ that are not alive at time $i$
@@ -330,7 +330,7 @@ Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then
 
 \begin{equation*}
 \begin{aligned}
-(\ref{eq:3}) & = -2W_i \mathbbm{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathbbm{1}_{x_i^* = 1} \\ 
+(\ref{eq:3}) & = -2W_i \mathbbm{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathbbm{1}_{x_i^* = 1} \\
 & \leq  -2W_i \mathbbm{1}_{x_i^* = 0} - 2W_i \mathbbm{1}_{x_i^* = 0} = -2W_i.
 \end{aligned}
 \end{equation*}
@@ -348,7 +348,6 @@ that $F_i + \overline{F_i} < 0$, a contradiction.
 
 We now proceed with the more general case. The analysis is similar to the previous cases and will be left as an exercise
 for the reader to save space and prevent further cluttering.
-
 %Note that van Zuylen's algorithm has a significantly simplified form. This is due to the introduction of the potential function. In the Slack algorithm, equation \ref{C:1} needed to be satisfied at every time $i$. The potential function lets us ammortize the cost somehow (not sure how?)
 \end{proof}
 
@@ -365,8 +364,10 @@ mimicking much of Poloczek's notation and terminology.
 
 Our first order of business is to make ``greedy approach'' precise.
 To do this, we imagine the input as being of a series of \emph{data items},
-each of which corresponds to a variable $x$,
-which must be assigned permanently before moving on to the next data item.
+each of which corresponds to a variable $x$.
+A \emph{greedy algorithm} inspects the data items in some order
+and irreversibly assigns the variable for each data item
+before moving on to the next.
 A data item for $x$ contains a list of the following information
 for each undecided clause $c$ that $x$ appears in:
 \begin{itemize}
@@ -377,17 +378,34 @@ for each undecided clause $c$ that $x$ appears in:
 \item
   a list of the other unassigned variables (without sign information) in $c$.
 \end{itemize}
-Additionally, identical clauses are merged by adding their weights.
-Note that data items depend on what has been assigned so far.
+Data items depend on what has been assigned so far.
+Namely, as the algorithm executes, we update $x$'s data item by
+\begin{itemize}
+\item
+  removing decided clauses,
+\item
+  removing assigned variables from undecided clauses,
+\item
+  and merging undecided clauses with the same sign of $x$
+  and same set of unassigned variables by adding their weights.
+\end{itemize}
+Note that, for instance, $(x \lor y)$ and $(x \lor \ol{y})$
+would be merged for $x$'s data item but not for $y$'s.
+The intention of data items is not
+to be an even slightly practical representation of the problem.
+Rather, they help make precise the sort of information an algorithm uses.
 
 An \emph{online greedy algorithm},
-such as those from Sections \ref{S:PS} and \ref{S:vZ},
+such as those from Sections~\ref{S:PS}~and~\ref{S:vZ},
 is given the data items in some adversarial order,
 while an \emph{adaptive greedy algorithm}
-can choose at each step the sort of data item it would like to see next.
-(Specifically, at each step,
-it gives an ordering $\prec$ on all possible data items
-and is given $\prec$-minimal remaining data item.)
+can choose at each step the sort of data item it would like to see next
+without being able to actually inspect every data item.
+Specifically, at each step,
+an adaptive greedy algorithm
+gives an ordering $\prec$ on all possible data items
+and is given the $\prec$-minimal among remaining data item
+with ties broken adversarially.
 We know that online greedy algorithms can achieve $3/4$-approximations,
 but we might hope that cleverer choice of weights
 (e.g. $\alpha$ in van Zuyeln's algorithm)
@@ -405,7 +423,7 @@ and even even if we allow them to be adaptive, we still can't reach $3/4$.
 
 \begin{theorem}\label{theorem:greedyDeterministic}
   No deterministic adaptive greedy algorithm
-  is better than a $\frac{3 + \sqrt{33}}{12}$-approximation.
+  is better than a $\frac{\sqrt{33} + 3}{12}$-approximation.
 \end{theorem}
 
 For the proofs of both of these theorems,
@@ -419,11 +437,12 @@ an equivalence contributes weight 2 when $x = y$
 and only weight 1 when $x \neq y$,
 while an inequivalence contributes weight 2 when $x \neq y$
 and only weight 1 when $x = y$.
-Abusing terminology slightly,
-we say an (in)equivalence is satisfied
+We use the term ``quivalence''
+to refer to either an equivalence or inequivalence.
+Abusing terminology slightly, we say a quivalence is satisfied
 when it contributes weight 2 rather than only weight 1.
 
-\begin{proof}[Proof of Theorem \ref{theorem:greedyRandomized}]
+\begin{proof}[Proof of Theorem~\ref{theorem:greedyRandomized}]
   The construction given here is original
   but uses the same idea as that in \cite{DBLP:conf/esa/Poloczek11}.
 
@@ -435,9 +454,9 @@ when it contributes weight 2 rather than only weight 1.
   All of our inputs have the same set of clauses, all of weight 1:
   an equivalence of each pair of variables in $X \times Z$
   and an inequivalence of each pair of variables in $Y \times Z$.
-  Each (in)equivalence is 2 clauses, so this is $4n^2$ clauses in total,
+  Each quivalence is 2 clauses, so this is $4n^2$ clauses in total,
   $2n^2$ of which are always satisfied
-  and $2n^2$ of which depend on satisfying the (in)equivalences.
+  and $2n^2$ of which depend on satisfying the quivalences.
   The randomized input has the $2n$ data items for variables in $X$ and $Y$
   in a uniformly random order,
   followed by the $n$ data items for variables in $Z$
@@ -475,68 +494,271 @@ when it contributes weight 2 rather than only weight 1.
   for sufficiently large $n$.
 \end{proof}
 
-The proof of Theorem \ref{theorem:greedyDeterministic} is in similar style.
-We give a sketch here and refer the reader
-to \cite{PoloczekVideo} and \cite{DBLP:conf/esa/Poloczek11} for more details.
+The proof of Theorem~\ref{theorem:greedyDeterministic} is in similar style.
+We were unable to find a completely satisfying
+(pun only slightly intended)
+explanation of the construction.
+The remainder of this section is our interpretation of a combination of
+\cite{PoloczekVideo} and \cite{DBLP:conf/esa/Poloczek11},
+the former of which was particularly helpful.
+It is quite possible that some of the details of our explanation
+are different from Poloczek's original intention,
+but we obtain the same result.
 
-Given a deterministic adaptive greedy algorithm,
-we will adversarially construct an input for which it has
-a low approximation ratio.
+Given a deterministic adaptive greedy algorithm (hereafter ``the algorithm''),
+we (hereafter ``the adversary'')
+will construct an input for which it has a low approximation ratio.
 The construction uses $n$ variables and proceeds in two phases,
 during the first of which $G \approx n/5$ variables will be assigned.
 We distinguish between these $G$ phase I variables
 and the remaining $n-G$ phase II variables.
-The clause set consists of an (in)equivalence between every pair of variables
+The clause set consists of an quivalence between every pair of variables
 and some one-variable clauses,
-all of which have equal weight.
-We can delay the decisions of whether a particular (in)equivalence
-is an equivalence or inequivalence
-and of exactly which one-variable clauses we will include.
-We have to be careful to make sure that
-the adaptive algorithm can't force us to reveal the data item
-of a phase II variable while phase I is still happening,
-but we don't concern ourselves with these details for this sketch.
+also called \emph{unit clauses}.
+All the clauses in quivalences have weight 1,
+and the unit clauses have weights between $0$ and $G$, inclusive.
+Whether each quivalence is an equivalence or an inequivalence
+is decided by the adversary as the algorithm executes,
+as is the weight of each unit clause.
 
-At any stage of the algorithm, every phase II variable $x$
-has a ``score'' $(a(x),b(x))$
-defined as follows:
-if we think of reducing a clauses using the values of assigned variables,
-e.g.\ reducing $x \lor y$ to $y$ if $x = 0$,
-then $a(x)$ and $b(x)$ are
-the numbers of $\ol{x}$ and $x$ clauses, respectively.
+At any stage of the algorithm, every variable $x$
+has a ``score'' $(a,b)$,
+where $a$ is the current weight of the unit clause $x$
+and $b$ is the current weight of the unit clause $\ol{x}$.
+We will sometimes refer to this as the score of $x$'s data item.
+Note that the score changes as the algorithm executes
+and is not the same as the starting weights of those unit clauses.
+When the algorithm assigns another variable $y$
+while $x$ is still unassigned,
+the pair of clauses that is the quivalence between $x$ and $y$
+become a satisfied clause and a unit clause,
+increasing one of $a$ or $b$ by 1.
 We eventually have to assign $x$,
-at which point at least $\min\{a(x),b(x)\}$ clauses will be unsatisfied.
-We supply one-variable clauses at the start to give each phase II variable
-a starting score of either $(0,G)$ or $(G,0)$.
+at which point clauses of weight at least $\min\{a,b\}$
+and at most $\max\{a,b\}$ will be satisfied.
 
-During phase I,
-each phase I variable $x$ is assigned to either 0 or 1
-by the deterministic algorithm.
-In response to that assignment,
-we determine the (in)equivalence between $x$ and each phase II variable $y$
-such that neither $a(y)$ nor $b(y)$ exceeds $G$.
-For example, if $x$ is assigned 0 and $y$ has score $(0,G)$,
-we would make an equivalence between $x$ and $y$,
-because that equivalence consists of $\ol{x} \lor y$,
-which is satisfied by $x = 0$,
-and $x \lor \ol{y}$, which becomes $\ol{y}$ when $x = 0$,
-increasing $a(y)$ to 1.
-This means that every phase II variable has score $(G,G)$
-at the end of phase I.
-In phase II, we decide (in)equivalences in response to assignments
-such that $a(x)$ and $b(x)$ never differ by more than 1
-for any phase II variable $x$,
-which maximizes the minimum number of clauses
-each assignment will unsatisfy.
-It remains to be shown that the optimal assignment
-is sufficiently better than the assignment given by the algorithm,
-that we can treat phase I and phase II variables so differently
-without the adaptivity of the algorithm getting in the way,
-and that we can delay the decisions we delay without contradicting ourselves.
-As mentioned earlier,
-\cite{PoloczekVideo} and \cite{DBLP:conf/esa/Poloczek11}
-address these details.
+The most slippery parts of the adversarial construction
+are claims that the adversary can ensure certain conditions hold
+at certain stages of the algorithm, so we address those first.
+Recall that the data item for $x$ contains
+for each undecided clause $c$ that $x$ appears in
+the sign of $x$ in $c$, the weight of $c$,
+and a list of the other unassigned variables in $c$.
+Recall also that we merge identical clauses by adding their weights.
+Our input clauses will consist of unit clauses
+and exactly one quivalence between every pair of variables.
+Because equivalences and inequivalences between unassigned variables
+are indistinguishable due to lack of sign information,
+the only distinguishing feature of a variable
+is the weights of the unit clauses it appears in.
+This proves the following lemma.
 
+\begin{lemma}\label{lemma:score}
+  The only control the algorithm has over the data item it receives
+  is the score.
+\end{lemma}
+
+In particular, the algorithm can't distinguish between
+unit clauses that have been present since the start
+and unit clauses created later by one side of a quivalence being assigned.
+We turn our attention now to showing that the adversary
+can enforce certain constraints on the scores of variables in phase I.
+
+\begin{lemma}\label{lemma:phaseI}
+  During phase I, when $i \leq G$ variables have been assigned,
+  the adversary can ensure
+  \begin{itemize}
+  \item
+    that the scores of unassigned variables are bounded (pointwise)
+    by $(i,i)$ below and $(G,G)$ above
+  \item
+    and that when a variable $x$ is assigned by the algorithm,
+    the quivalences between $x$ and the other $i$ assigned variables
+    can be chosen without restriction.
+  \end{itemize}
+\end{lemma}
+
+\begin{proof}
+  This follows by induction on $i$.
+  For $i = 0$, the bounds are satisfied
+  as long as the adversary doesn't include unit clauses
+  with weight greater than $G$ in the formula
+  and there are no quivalences to be chosen.
+  For the inductive step, the following intuition can be helpful.
+  Imagine the adversary maintains a pool of the possible data items
+  that both don't contradict information revealed to the algorithm so far
+  and don't violate the bounds.
+  For instance, if a single variable $x$ has been assigned to 0,
+  there would be two possible data items of score $(1,1)$:
+  one with starting score $(1,0)$ and an equivalence with $x$
+  and another with starting score $(0,1)$ and an inequivalence with $x$.
+
+  Thanks to Lemma~\ref{lemma:score},
+  when the algorithm asks for a data item with some score,
+  the adversary can watch the algorithm assign the data item's variable
+  and, based on that assignment,
+  decide which of the data items with the same score
+  that are still in the pool it should have been.
+  Suppose we are assigning variable $x$.
+  The adversary updates the pool of possible data items
+  by first adding the two ``children'' of each data item in the pool,
+  one each having an equivalence and inequivalence with $x$,
+  and then pruning any data items that violate the bounds.
+  For example, the descendants of a data item starting with score $(2,1)$
+  that remain after two variables have been assigned to 0
+  are of score $(3,2)$, with one equivalence and one inequivalences,
+  and score $(2,3)$, with two equivalences.
+  The data item of score $(4,1)$ with two inequivalences
+  is pruned from the pool for having $b < 2$.
+
+  Thus, the bounds come for free from pruning,
+  so for the inductive step,
+  we just need to show that for any score and choice of quivalences,
+  the data item with that score and choice of quivalences
+  was not pruned at any previous time step.
+  (More precisely,
+  we should none of the ``ancestors'' of that data item,
+  given that a data item can have two possible children.)
+  Suppose the claim holds for some $i < G$
+  and let $x$ be the variable under inspection
+  after $i$ assignments have been made.
+  We want to show that, once $x$ is assigned,
+  for every score $(a,b)$ bounded by $(i+1,i+1)$ below and $(G,G)$ above
+  and every choice of quivalences with assigned variables (including $x$)
+  there is a possible data item with that score and those quivalences.
+  Suppose without loss of generality that $x$ was assigned to 1
+  and that we want a data item with score $(a,b)$ equivalence with $x$.
+  (The other cases are analogous.)
+  By the inductive hypothesis,
+  for any choice of quivalences with the other $i$ assigned variables,
+  there is a possible data item with score $(a-1,b)$ and those quivalences
+  because $a-1 \geq i$.
+  Adding the equivalence with $x$
+  contributes weight 1 to the positive unit clause because $x$ was assigned 1,
+  giving a data item of score of $(a,b)$ with the desired quivalences.
+\end{proof}
+
+A corollary of this is that at the beginning of phase II,
+all the possible data items have score $(G,G)$
+and can have any quivalences we like with the $G$ assigned variables.
+We don't need as much flexibility for quivalences in phase II.
+It is most helpful to think of variables in phase II
+as being assigned in \emph{consecutive pairs}
+starting with the very first variable of phase II.
+That is, the first and second variables assigned in phase II
+make up the first consecutive pair,
+the second and third variables make up the second consecutive pair, etc.
+
+\begin{lemma}\label{lemma:phaseII}
+  During phase II, when $G+i$ variables have been assigned,
+  the adversary can ensure
+  \begin{itemize}
+  \item
+    that the scores of unassigned variables
+    are $(G+i/2,G+i/2)$ if $i$ is even
+    and $(G+(i\pm1)/2,G+(i\mp1)/2)$ if $i$ is odd
+  \item
+    and that after another variable $x$ is assigned,
+    \begin{itemize}
+    \item
+      the adversary can choose the quivalences
+      between $x$ and phase I variables without restriction
+    \item
+      and, for each consecutive pair $(y,z)$ assigned so far in phase II,
+      the adversary can choose between
+      the two choices of the $x$-$y$ and $x$-$z$ quivalences
+      that are satisfied by opposite choices for $x$.
+    \end{itemize}
+  \end{itemize}
+\end{lemma}
+
+For example, if $y$ and $z$ have opposite values,
+we can choose to have their quivalences with $x$
+either both be equivalences or both be inequivalences.
+We omit the proof, which is mostly mechanical
+after using the same key insights as the proof of Lemma~\ref{lemma:phaseI}.
+Notice that we make no guarantee about the quivalence
+between two members of a consecutive pair.
+Armed with this lemma, we are finally ready to give the full construction.
+
+\begin{proof}[Proof of Theorem~\ref{theorem:greedyDeterministic}]
+  We first make a distinction between two ``parities'' of phase II variables.
+  Call the first variable assigned in phase II ``odd'',
+  the second ``even'', and so on.
+
+  The adversary constructs the clause set such that
+  \begin{itemize}
+  \item
+    all quivalences between two phase I variables are satisfied,
+  \item
+    all quivalences between
+    a phase I variable and an even phase II variable are unsatisfied,
+  \item
+    all quivalences between
+    a phase I variable and an odd phase II variable are satisfied,
+  \item
+    all quivalences between
+    phase II variables of the same parity are satisfied,
+  \item
+    and all quivalences between
+    phase II variables of different parities
+    that are not in the same consecutive pair
+    are unsatisfied
+  \end{itemize}
+  That the adversary can achieve all of these follows from
+  Lemmas~\ref{lemma:phaseI}~and~\ref{lemma:phaseII}.
+  To calculate an upper bound on the weight of the algorithm's assignment,
+  we sum the maximum possible $\max\{a,b\}$
+  of all scores $(a,b)$ of the variables as they are assigned,
+  plus an additional term for the clause of each quivalence
+  that's immediately satisfied even if the quivalence as a whole is not.
+  This comes out to the sum of
+  \begin{itemize}
+  \item
+    $\binom{n}{2}$ guaranteed from quivalences,
+  \item
+    $G$ scores contributing at most $G$ each
+    in phase I (by Lemma~\ref{lemma:phaseI}),
+  \item
+    and $n-G$ scores contributing scores ranging from $G$ to $G + (n-G)/2$,
+    or about $G + (n-G)/4$ each on average,
+    in phase II (by Lemma~\ref{lemma:phaseII}).
+  \end{itemize}
+  Letting $G = \alpha n$, this comes out to
+  \[
+    W_\textrm{algorithm} = \frac{n^2}{4}(3 + 2\alpha + \alpha^2) + O(n).
+  \]
+
+  A much better assignment is obtained by complementing
+  the phase I and odd phase II variables.
+  In particular, every quivalence is satisfied
+  with the possible exception of those between consecutive pairs,
+  so there are at least $2\binom{n}{2} - (n-G)$ satisfied clauses.
+  A more careful examination of the unit clauses
+  shows that each phase II variable satisfies a unit clause of weight $G$
+  and that each phase I variable satisfies
+  a unit clause of weight $G/2$ on average.
+  Specifically, at the end of phase I,
+  an even phase II variable $x$ assigned to 1 has score $(G,G)$
+  and has unsatisfied quivalences with phase I variables.
+  Because those quivalences are unsatisfied,
+  they must all contribute to the weight of $\ol{x}$,
+  which means $x$ had weight $G$ from the beginning.
+  The same reasoning applies to other phase II variables,
+  and a similar argument shows that a phase I variable assigned
+  after $i$ others satisfies a unit clause of weight $i$.
+  Summing all of this gives
+  \[
+    W_\textrm{better} = \frac{n^2}{4}(4 + 4\alpha - 2\alpha^2) + O(n).
+  \]
+  Simple calculus shows that, ignoring the $O(n)$ term,
+  $W_\textrm{algorithm}/W_\textrm{better}$
+  is minimized when $\alpha = \frac{\sqrt{33} - 5}{4}$,
+  giving a minimal ratio of $\frac{\sqrt{33} + 3}{12} < 3/4$.
+  This means that for every deterministic algorithm,
+  there is some input for which it cannot give better than a
+  $\frac{\sqrt{33} + 3}{12}$-approximation.
+\end{proof}
 
 \bibliography{18-416-FP.bib}
 \bibliographystyle{plain}
