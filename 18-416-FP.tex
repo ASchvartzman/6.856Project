@@ -225,10 +225,10 @@ The main idea of the algorithm is that the magnitude of $\varepsilon$, which is 
 Choosing $$\varepsilon = \varepsilon_1 \equiv \frac{-\frac{\mathsf{slack}^2}{\Delta} + \frac{\mathsf{slack}}{\Delta}(w_{x_i} + w_{\bar{x_i}})}{2\mathsf{slack}+ \mathsf{fanout} + \mathsf{fanin}}$$ yields probabilities that give a $\frac{3}{4}$ approximation.
 \end{theorem}
 We derive this result algebraically. Let $x_i$ be the $i^{th}$ variable fixed. Following our notation in the introduction, let SAT($i$), UNSAT($i$) be random variables that denote the weight of all clauses that are satisfied, and unsatisfiable once we fix $x_i$, respectively. Recall sat($i$) = SAT($i$) - SAT($i-1$), unsat($i$) = UNSAT($i$) - UNSAT($i-1$). It follows that
-\begin{eqnarray}
-\mathbb{E}[\textrm{sat}(i)] &=& p_0(\mathsf{fanout} + 2w_{\bar{x_i}}) + p_1(\mathsf{fanin} + 2w_{x_i})\\
-\mathbb{E}[\textrm{unsat}(i)] &=& p_0w_{x_i} + p_1w_{\bar{x_i}}
-\end{eqnarray}
+\begin{align}
+\mathbb{E}[\textrm{sat}(i)] &= p_0(\mathsf{fanout} + 2w_{\bar{x_i}}) + p_1(\mathsf{fanin} + 2w_{x_i})\\
+\mathbb{E}[\textrm{unsat}(i)] &= p_0w_{x_i} + p_1w_{\bar{x_i}}
+\end{align}
 Now, we call a clause, $C$ containing $x_i$ or its negation \textit{alive} iff after assigning a value to $x_i$, $C$ still has not been satisfied or falsified. Further, we define the random variable ``wounded" to be the sum of the weights of all alive clauses. Therefore
 \begin{equation}
 \mathbb{E}[\textrm{wounded}] = p_0 \cdot \mathsf{fanin} + p_1 \cdot \mathsf{fanout}
