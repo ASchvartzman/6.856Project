@@ -113,7 +113,7 @@ Suppose we have set variables $x_1,...,x_{i-1}$ and are considering a value for 
 of the clauses that become satisfied by assigning $x_i$ and similarly $\mathrm{UNSAT}(i) - \mathrm{UNSAT}(i-1)$ is the weight of the clauses that become
 unsatisfiable by assigning $x_i$.
 Notice that $\mathrm{SAT}(n)$ is the total weight of the clauses satisfied by our algorithm and $\mathrm{UNSAT}(n) = W - \mathrm{SAT}(n)$ is the weight of clauses
-unsatisfied by the algorithm. We define sat($i$) = SAT($i$) - SAT($i-1$), unsat($i$) = UNSAT($i$) - UNSAT($i-1$). Both algorithms we study rely on the following fact to be true to meet their guarantees:
+unsatisfied by the algorithm. We define sat($i$) = SAT($i$) - SAT($i-1$), unsat($i$) = UNSAT($i$) - UNSAT($i-1$). If the following inequality holds for all $i$, then the it is easy to show we can achieve a $3/4$-approximation ratio:
 
 \begin{equation}
 \label{eq:1}
@@ -132,7 +132,7 @@ Adding these inequalities over all $i$ we get that
 
 From this we get that our algorithms approximation ratio, $\textrm{SAT}(n)$, is at least $\frac{3}{4}$ of the maximum possible weight $W$.
 
-There might not always exist an assignment for $i$ such that the equation (cite) above holds. However, we only need it to hold on aggregate.
+There might not always exist an assignment for $i$ such that the equation \ref{eq:1} above holds. However, we only need it to hold on aggregate.
 This is why the notion of a potential function $\phi$ is introduced. Throughout the algorithm, we will use the potential function to help us pay
 for future mistakes where the inequality above might not hold.
 
@@ -326,11 +326,11 @@ On the other hand
 
 We will show that equation $(\ref{eq:4}) \geq \text{equation } (\ref{eq:3})$ by showing an upper bound $B$ on the right hand side of equation (\ref{eq:3}) such that equation $(\ref{eq:4}) \geq B \geq \text{equation } (\ref{eq:3})$.
 
-Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then
+Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then equation $(\ref{eq:3})$ becomes equal to
 
 \begin{equation*}
 \begin{aligned}
-(\ref{eq:3}) & = -2W_i \mathbbm{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathbbm{1}_{x_i^* = 1} \\ 
+& -2W_i \mathbbm{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathbbm{1}_{x_i^* = 1} \\ 
 & \leq  -2W_i \mathbbm{1}_{x_i^* = 0} - 2W_i \mathbbm{1}_{x_i^* = 0} = -2W_i.
 \end{aligned}
 \end{equation*}
