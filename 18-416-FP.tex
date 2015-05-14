@@ -55,9 +55,9 @@ A number of randomized $\frac{3}{4}$-approximation algorithms for MAX SAT have b
 
 \section{Introduction}
 
-In the Maximum Satisfiability Problem (MAX SAT) we are given a set of boolean variables $x_1, ..., x_n$
-and a formula in conductive normal form whose clauses $C_1,...,C_m$ involving them and
-want an assignment of the variables that satisfies the most clauses.
+In the Maximum Satisfiability Problem (MAX SAT) we are given a set of boolean formula in conjunctive normal, with
+variables $x_1, ..., x_n$ and clauses $C_1,...,C_m$. We want to find an
+assignment of the variables that satisfies the most clauses.
 In class we analyzed the unweighted case, but here we consider non-negative weights $w_i$ for the clauses
 and ask for the weight of the satisfied clauses to be maximized. This problem, which is a generalization of the
 Boolean Satisfiability Problem (SAT), is also $\NP$-hard.
@@ -76,7 +76,7 @@ Later, Yanakakis \cite{Yannakakis1994475} and separately Goemans and Williamson 
 gave algorithms which achieved $3/4$-approximation ratios. In fact, we studied one of these in class.
 These algorithms relied heavily on linear programming relaxations. The best known approximation algorithm due to Avidor, Berkovitch
 and Zwick achieves an approximation ratio of 0.7968. The algorithm is a hybrid which runs multiple MAX SAT approximation algorithms
-(including LP based ones) and returns the best \cite{Avidor:2005:IAA:2105211.2105214}. They also present an algorithm which is conjectured to have a performance of 0.843.
+(including LP-based ones) and returns the best \cite{Avidor:2005:IAA:2105211.2105214}. They also present an algorithm which is conjectured to have a performance of 0.843.
 
 In 1999, Williamson posed the question
 of whether or not the same approximation ratio could be achieved without using Linear Programming. In 2011,
@@ -103,7 +103,8 @@ that no better than a $0.729$-approxmation is possible without randomness.
 
 \section{The General Idea}\label{S:idea}
 
-Let the input variables be $x_1,...,x_n$ and the input clauses be $C_1,...,C_m$
+Let the input variables be $x_1,...,x_n$ and the input clauses be $C_1,...,C_m$,
+%because Elzur is an asshole%
 each with associated non-negative weights $w_1,...,w_m$. Let $\sum_{i=1}^{m} w_i = W$.
 We are interested in finding an assignment of the variables $x_i$ such that the clauses satisfied have weight at least $\frac{3}{4}W$.
 
@@ -113,7 +114,7 @@ Suppose we have set variables $x_1,...,x_{i-1}$ and are considering a value for 
 of the clauses that become satisfied by assigning $x_i$ and similarly $\mathrm{UNSAT}(i) - \mathrm{UNSAT}(i-1)$ is the weight of the clauses that become
 unsatisfiable by assigning $x_i$.
 Notice that $\mathrm{SAT}(n)$ is the total weight of the clauses satisfied by our algorithm and $\mathrm{UNSAT}(n) = W - \mathrm{SAT}(n)$ is the weight of clauses
-unsatisfied by the algorithm. We define sat($i$) = SAT($i$) - SAT($i-1$), unsat($i$) = UNSAT($i$) - UNSAT($i-1$). Both algorithms we study rely on the following fact to be true to meet their guarantees:
+unsatisfied by the algorithm. We define sat($i$) = SAT($i$) - SAT($i-1$), unsat($i$) = UNSAT($i$) - UNSAT($i-1$). If the following inequality holds for all $i$, then the it is easy to show we can achieve a $3/4$-approximation ratio:
 
 \begin{equation}
 \label{eq:1}
@@ -130,9 +131,9 @@ Adding these inequalities over all $i$ we get that
 \end{aligned}
 \end{equation*}
 
-From this we get that our algorithms approximation ratio, $\textrm{SAT}(n)$, is at least $\frac{3}{4}$ of the maximum possible weight $W$.
+From this we get that our algorithms' approximation ratio, $\textrm{SAT}(n)$, is at least $\frac{3}{4}$ of the maximum possible weight $W$.
 
-There might not always exist an assignment for $i$ such that the equation (cite) above holds. However, we only need it to hold on aggregate.
+There might not always exist an assignment for $i$ such that the equation \ref{eq:1} above holds. However, we only need it to hold on aggregate.
 This is why the notion of a potential function $\phi$ is introduced. Throughout the algorithm, we will use the potential function to help us pay
 for future mistakes where the inequality above might not hold.
 
@@ -146,8 +147,7 @@ will achieve its guarantees. Let $\phi(i)$ be the value of the potential functio
 \begin{equation}
 \begin{aligned}
 \label{eq:2}
-\mathbb{E}[\mathrm{sat}(i) - 3\mathrm{unsat}(i)] \\
-\geq \mathbb{E}(\phi(i) - \phi(i-1)].
+\mathbb{E}[\mathrm{sat}(i) - 3\mathrm{unsat}(i)] \geq \mathbb{E}(\phi(i) - \phi(i-1)].
 \end{aligned}
 \end{equation}
 \end{itemize}
@@ -165,7 +165,7 @@ We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1
 \section{Poloczek and Schtinger's Approach}\label{S:PS}
 
 In this section,
-we will remind the read about Johnson's Deterministic Algorithm. Motivated by the power of randomness, Poloczek and Schnitger
+we will remind the reader about Johnson's Deterministic Algorithm. Motivated by the power of randomness, Poloczek and Schnitger
 turn it into a randomized algorithm. Their first approach, the Canonical Randomization, can be shown to achieve an approximation ratio of at most $17/23$.
 They overcome this barrier by introducing slight modifications to the probabilities and prove that there exist perturbations that yield a $3/4$ approximation.
 
@@ -174,41 +174,42 @@ They overcome this barrier by introducing slight modifications to the probabilit
 Consider, as mentioned in the introduction, the scaled clause weight.
 For a clause $C_j$, with weight $w_j$, we have the modified weight:  $f(C_j) = w_j 2^{-|C_j|}$.
 
-Johnson's Algorithm processes the variables in an arbitrary order, and assigns them a value of 0 or 1 as follows. Let $x$ be the variable being assigned a value. We define the \emph{support} of $x_i$, $\mu_{x_i}$ to be the sum of the scaled weights of clauses containing $x_i$. Similarly, $\mu_{\bar{x_i}}$ is the sum of scaled weights of clauses containing $\bar{x_i}$:
+Johnson's algorithm processes the variables in an arbitrary order, and assigns them a value of 0 or 1 as follows. Let $x$ be the variable being assigned a value. We define the \emph{support} of $x_i$, $\mu_{x_i}$ to be the sum of the scaled weights of clauses containing $x_i$. Similarly, $\mu_{\bar{x_i}}$ is the sum of scaled weights of clauses containing $\bar{x_i}$ so
 
 \begin{align*}
 \mu_{x_i} = \sum_{C,x_i \in C}f(C), \,\,\,\, \mu_{\bar{x_i}} =\sum_{C,\bar{x_i}\in C}f(C)
 \end{align*}
-Johnson's Algorithm greedily assigns $x_i =1$ if and only if $\mu_{x_1} \ge \mu_{\bar{x_i}}$. It is straightforward to show that Johnson's algorithm provides a $\frac{2}{3}$ approximation ratio. It can be shown also that Johnson's algorithm can provide a $\frac{2}{3} + c, c>0$ approximation ratio.
+Johnson's algorithm greedily assigns $x_i =1$ if and only if $\mu_{x_1} \ge \mu_{\bar{x_i}}$. It is straightforward to show that Johnson's algorithm provides a $\frac{2}{3}$ approximation ratio. It can be shown also that Johnson's algorithm can provide a $\frac{2}{3} + c, c>0$ approximation ratio.
 
 \subsection*{The Canonical Randomization}
-Poloczek and Schnitger consider the \emph{Canonical Randomization} (CR) of Johnson's Algorithm. Instead of deterministically assigning a value to the variable $x_i$, we assign it a value of 1 with probability proportional to the support of $x_i$ relative to that of $\bar{x_i}$. So
+Poloczek and Schnitger consider the \emph{Canonical Randomization} (CR) of Johnson's algorithm. Instead of deterministically assigning a value to the variable $x_i$, we assign it a value of 1 with probability proportional to the support of $x_i$ relative to that of $\bar{x_i}$. So
 \[\Pr[\mathrm{assign }\, x_i=1] = \frac{\mu_{x_i}}{\mu_{x_i} + \mu_{\bar{x_i}}},\] and $x_i$ equals zero with the remaining probability. They prove the limits of this approach. We state their result without proof.
 
 \begin{lemma}
 \label{L:1}
-The approximation ratio of CR algorithm is upper-bounded by:
+The approximation ratio of CR algorithm is upper-bounded by
 $$\frac{17}{23} < \frac{3}{4}$$
 
 \end{lemma}
+The proof is constructive one. Poloczek and Schnitger construct a family of 2-CNF fomrulas which are fully satisfied by an assignment of all-ones, and show that as the number of variables gets large, the CR approximation approaches the above limit. This proof is quite long and out of this paper's scope.
 
 \subsection*{Alternative Probabilities}
 Due to Lemma \ref{L:1}, Poloczek and Schnitger decide to use an alternative weighting scheme. In this alternative, every clause with a single variable gets its weight doubled, while the remaining weights are unchanged. Therefore, the new support for $x$ which we can label $\lambda_{x_i}$ is:
 \[[\textrm{sum of weights of clauses with }x_i\textrm{ with }\ge 2\textrm{ variables}] + 2[\textrm{sum of weights of clause containing just }x_i].\]
 
-If we call the first sum $\mathsf{fanin}$, and label the second sum $w_{x_i}$ and $\mathsf{fanout}$, $w_{\bar{x_i}}$ their counterparts for $\bar{x_i}$, then:
+If we call the first sum $\mathsf{fanin}$, and label the second sum $w_{x_i}$ and $\mathsf{fanout}$, $w_{\bar{x_i}}$ their counterparts for $\bar{x_i}$, then
 \begin{eqnarray*}
-\lambda_{x_i} \equiv \textrm{Support for } x_i = \mathsf{fanin} + 2w_{x_i}\\
-\lambda_{\bar{x_i}} \equiv \textrm{Support for } \bar{x_i} = \mathsf{fanout} + 2w_{\bar{x_i}}
+\lambda_{x_i} &\equiv& \textrm{Support for } x_i = \mathsf{fanin} + 2w_{x_i}\\
+\lambda_{\bar{x_i}} &\equiv& \textrm{Support for } \bar{x_i} = \mathsf{fanout} + 2w_{\bar{x_i}}
 \end{eqnarray*}
 
 Where $\mathsf{fanout}$ and $w_{\bar{x_i}}$ are respectively: \[[\textrm{sum of weights of clauses with }\bar{x}_i\textrm{ with }\ge 2\textrm{ variables}] ,\,\,\, [\textrm{sum of weights of clause containing just }x_i].\]
-Finally, we define $\Delta$ to be the sum of the supports, so $\Delta = \lambda_{x_i} + \lambda_{\bar{x_i}} = \mathsf{fanin} + 2w_{x_i} + \mathsf{fanout} + 2w_{\bar{x_i}}$. If we do a canonical randomization  using the new weight functions, we see that
+Finally, we define $\Delta$ to be the sum of the supports, so $\Delta = \lambda_{x_i} + \lambda_{\bar{x_i}} = \mathsf{fanin} + 2w_{x_i} + \mathsf{fanout} + 2w_{\bar{x_i}}$. If we do a canonical randomization using the new weight functions, we see that
 \begin{eqnarray*}
 q_0 &:=& \Pr[x_i=0] = \frac{\mathsf{fanout} + 2w_{\bar{x_i}}}{\Delta}\\
 q_1 &:=& \Pr[x_i=1] = \frac{\mathsf{fanin} + 2w_{x_i}}{\Delta}
 \end{eqnarray*}
-Note that for a $2-\text{CNF}$ formula, these alternative weights are exactly equivalent to the weights used in Johnson's Algorithm. Thus, these modified weights still don't guarantee a $\frac{3}{4}$ approximation ratio.
+Note that for a $2-\text{CNF}$ formula, these alternative weights are exactly equivalent to the weights used in Johnson's algorithm. Thus, these modified weights still don't guarantee a $\frac{3}{4}$ approximation ratio.
 
 \subsection*{Slack Algorithm}
 The general approach of this algorithm is to change the probabilities, $q_0, q_1$ with which we assign values to $x_i$. In a sense, we're making the algorithm "less random" by increasing the higher of the two probabilities, bringing it closer to 1, and decreasing the lower of the two probabilities.
@@ -294,7 +295,8 @@ Then the expected weight of the clauses satisfied by the algorithm is at least $
 
 \begin{proof}
 We will present a potential function $\phi$ such that it meets the criterion presented in section \ref{S:idea}. We claim that the potential function
-$\phi(i) = 2(F_i)$ works. This potential function is implicitly present as the $2(F_i - F_{i-1})$ term in Poloczek and Schnitger's equation \ref{C:1}. Note that at time $0$,
+$\phi(i) = 2(F_i)$ works (the potential function corresponds to the $2(F_i - F_{i-1})$ term in Poloczek and Schnitger's equation \ref{C:1}).
+Note that at time $0$,
  $\phi(0) = 2(W-\textrm{OPT})$. It is clear that the first two conditions will be met, so we will focus on showing equation \ref{eq:2}.
  For this purpose we will lower bound the weight of the contradictory clauses at time $i-1$ that are not alive at time $i$
  and upper bound the weight of the clauses that become contradictory at time $i$.
@@ -326,11 +328,11 @@ On the other hand
 
 We will show that equation $(\ref{eq:4}) \geq \text{equation } (\ref{eq:3})$ by showing an upper bound $B$ on the right hand side of equation (\ref{eq:3}) such that equation $(\ref{eq:4}) \geq B \geq \text{equation } (\ref{eq:3})$.
 
-Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then
+Consider the case $\alpha \leq 0$, i.e $W_i + F_i \leq \overline{W_i}$. Then equation $(\ref{eq:3})$ becomes equal to
 
 \begin{equation*}
 \begin{aligned}
-(\ref{eq:3}) & = -2W_i \mathbbm{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathbbm{1}_{x_i^* = 1} \\
+& -2W_i \mathbbm{1}_{x_i^* = 0} + 2(-\overline{W}_i + F_i) \mathbbm{1}_{x_i^* = 1} \\
 & \leq  -2W_i \mathbbm{1}_{x_i^* = 0} - 2W_i \mathbbm{1}_{x_i^* = 0} = -2W_i.
 \end{aligned}
 \end{equation*}
