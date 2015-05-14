@@ -103,7 +103,8 @@ that no better than a $0.729$-approxmation is possible without randomness.
 
 \section{The General Idea}\label{S:idea}
 
-Let the input variables be $x_1,...,x_n$ and the input clauses be $C_1,...,C_m$
+Let the input variables be $x_1,...,x_n$ and the input clauses be $C_1,...,C_m$, 
+%because Elzur is an asshole%
 each with associated non-negative weights $w_1,...,w_m$. Let $\sum_{i=1}^{m} w_i = W$.
 We are interested in finding an assignment of the variables $x_i$ such that the clauses satisfied have weight at least $\frac{3}{4}W$.
 
@@ -146,8 +147,7 @@ will achieve its guarantees. Let $\phi(i)$ be the value of the potential functio
 \begin{equation}
 \begin{aligned}
 \label{eq:2}
-\mathbb{E}[\mathrm{sat}(i) - 3\mathrm{unsat}(i)] \\
-\geq \mathbb{E}(\phi(i) - \phi(i-1)].
+\mathbb{E}[\mathrm{sat}(i) - 3\mathrm{unsat}(i)] \geq \mathbb{E}(\phi(i) - \phi(i-1)].
 \end{aligned}
 \end{equation}
 \end{itemize}
@@ -165,7 +165,7 @@ We will say a clause is contradictory at time $i$ if it is not satisfied by $x_1
 \section{Poloczek and Schtinger's Approach}\label{S:PS}
 
 In this section,
-we will remind the read about Johnson's Deterministic Algorithm. Motivated by the power of randomness, Poloczek and Schnitger 
+we will remind the reader about Johnson's Deterministic Algorithm. Motivated by the power of randomness, Poloczek and Schnitger 
 turn it into a randomized algorithm. Their first approach, the Canonical Randomization, can be shown to achieve an approximation ratio of at most $17/23$. 
 They overcome this barrier by introducing slight modifications to the probabilities and prove that there exist perturbations that yield a $3/4$ approximation. 
 
@@ -295,7 +295,8 @@ Then the expected weight of the clauses satisfied by the algorithm is at least $
 
 \begin{proof}
 We will present a potential function $\phi$ such that it meets the criterion presented in section \ref{S:idea}. We claim that the potential function 
-$\phi(i) = 2(F_i)$ works. This potential function is implicitly present as the $2(F_i - F_{i-1})$ term in Poloczek and Schnitger's equation \ref{C:1}. Note that at time $0$,
+$\phi(i) = 2(F_i)$ works (the potential function corresponds to the $2(F_i - F_{i-1})$ term in Poloczek and Schnitger's equation \ref{C:1}). 
+Note that at time $0$,
  $\phi(0) = 2(W-\textrm{OPT})$. It is clear that the first two conditions will be met, so we will focus on showing equation \ref{eq:2}.
  For this purpose we will lower bound the weight of the contradictory clauses at time $i-1$ that are not alive at time $i$
  and upper bound the weight of the clauses that become contradictory at time $i$.
